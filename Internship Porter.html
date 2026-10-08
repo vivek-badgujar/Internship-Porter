@@ -1,0 +1,2408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>InternHub — Find Your Dream Internship</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ RESET & TOKENS ============ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --violet: #8b5cf6;
+  --pink: #d946ef;
+  --cyan: #06b6d4;
+  --bg: #f7f8fc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e8ebf3;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow-sm: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+  --shadow: 0 8px 24px rgba(15,23,42,.08);
+  --shadow-lg: 0 20px 50px rgba(15,23,42,.14);
+  --grad: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+  --grad-soft: linear-gradient(135deg, #eef2ff 0%, #faf5ff 100%);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: none; }
+
+.container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 22px; }
+
+/* ============ TOPBAR ============ */
+.topbar {
+  position: sticky; top: 0; z-index: 60;
+  background: rgba(255,255,255,.82);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid rgba(232,235,243,.9);
+}
+.topbar-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 70px; gap: 16px;
+}
+.brand {
+  display: flex; align-items: center; gap: 9px;
+  font-size: 1.32rem; font-weight: 800; color: var(--text);
+  letter-spacing: -0.6px;
+}
+.brand .logo-mark {
+  width: 36px; height: 36px; border-radius: 11px;
+  background: var(--grad);
+  display: grid; place-items: center;
+  font-size: 1.05rem;
+  box-shadow: 0 6px 16px rgba(99,102,241,.36);
+}
+.brand em { font-style: normal; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+.nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.nav a, .nav button.navlink {
+  background: none; border: none; cursor: pointer;
+  font-size: 0.9rem; font-weight: 600; color: var(--muted);
+  padding: 9px 15px; border-radius: 10px; transition: all .18s;
+  font-family: inherit;
+}
+.nav a:hover, .nav button.navlink:hover { background: #f1f3fa; color: var(--text); }
+.nav a.active { background: var(--grad); color: #fff; box-shadow: 0 5px 14px rgba(99,102,241,.32); }
+
+.user-chip {
+  display: flex; align-items: center; gap: 9px;
+  background: #f4f5fb; color: var(--text);
+  padding: 5px 14px 5px 6px; border-radius: 999px;
+  font-size: 0.85rem; font-weight: 700;
+  border: 1px solid var(--border);
+}
+.user-chip .avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--grad); color: #fff;
+  display: grid; place-items: center; font-size: 0.75rem; font-weight: 800;
+}
+
+/* ============ BUTTONS ============ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  background: var(--grad); color: #fff; border: none; cursor: pointer;
+  padding: 11px 20px; border-radius: 11px;
+  font-size: 0.9rem; font-weight: 700; font-family: inherit;
+  transition: all .2s cubic-bezier(.34,1.4,.64,1);
+  box-shadow: 0 6px 18px rgba(99,102,241,.3);
+  white-space: nowrap;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(99,102,241,.42); }
+.btn:active { transform: translateY(0); }
+.btn:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.btn-outline {
+  background: #fff; color: var(--primary-dark);
+  border: 1.5px solid #dcdff5; box-shadow: var(--shadow-sm);
+}
+.btn-outline:hover { background: #f8f8ff; border-color: var(--primary); box-shadow: 0 8px 20px rgba(99,102,241,.16); }
+
+.btn-ghost {
+  background: #fff; color: var(--muted);
+  border: 1.5px solid var(--border); box-shadow: none;
+}
+.btn-ghost:hover { background: #f6f7fc; color: var(--text); box-shadow: none; transform: translateY(-1px); }
+
+.btn-danger { background: linear-gradient(135deg,#f43f5e,#ef4444); box-shadow: 0 6px 18px rgba(239,68,68,.28); }
+.btn-danger:hover { box-shadow: 0 10px 26px rgba(239,68,68,.4); }
+
+.btn-sm { padding: 7px 13px; font-size: 0.79rem; border-radius: 9px; }
+.btn-block { width: 100%; }
+
+/* ============ LAYOUT ============ */
+main { flex: 1; padding: 0 0 70px; }
+
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-sm);
+  padding: 24px;
+}
+
+.grid { display: grid; gap: 18px; }
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+.grid-4 { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+
+.section-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin: 34px 0 18px; }
+.section-head h2 { font-size: 1.3rem; letter-spacing: -0.4px; }
+.section-head p { color: var(--muted); font-size: 0.88rem; }
+
+/* ============ HERO ============ */
+.hero {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 45%, #c026d3 100%);
+  padding: 62px 0 90px;
+  margin-bottom: -52px;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.14) 1px, transparent 1px);
+  background-size: 26px 26px;
+  opacity: .55;
+}
+.blob {
+  position: absolute; border-radius: 50%; filter: blur(70px); opacity: .5;
+  animation: float 14s ease-in-out infinite;
+}
+.blob.b1 { width: 380px; height: 380px; background: #22d3ee; top: -140px; right: -80px; }
+.blob.b2 { width: 300px; height: 300px; background: #f472b6; bottom: -160px; left: -60px; animation-delay: -5s; }
+.blob.b3 { width: 220px; height: 220px; background: #a78bfa; top: 40%; left: 45%; animation-delay: -9s; opacity: .35; }
+@keyframes float {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(28px,-24px) scale(1.08); }
+  66% { transform: translate(-22px,20px) scale(.95); }
+}
+
+.hero-inner { position: relative; z-index: 2; text-align: center; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.28);
+  color: #fff; padding: 7px 16px; border-radius: 999px;
+  font-size: 0.8rem; font-weight: 700; letter-spacing: .2px;
+  backdrop-filter: blur(8px);
+  margin-bottom: 20px;
+  animation: fadeUp .6s ease both;
+}
+.hero h1 {
+  color: #fff; font-size: clamp(2rem, 5vw, 3.15rem);
+  font-weight: 800; letter-spacing: -1.4px; line-height: 1.12;
+  margin-bottom: 16px; animation: fadeUp .6s .08s ease both;
+}
+.hero h1 .hl {
+  background: linear-gradient(135deg,#fde68a,#fca5a5,#f0abfc);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero p.lede {
+  color: rgba(255,255,255,.9); font-size: 1.03rem; max-width: 620px;
+  margin: 0 auto 30px; animation: fadeUp .6s .16s ease both;
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+.hero-search {
+  display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px;
+  background: rgba(255,255,255,.98);
+  padding: 12px; border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(30,20,80,.35);
+  max-width: 900px; margin: 0 auto;
+  animation: fadeUp .6s .24s ease both;
+}
+.hero-search .field { position: relative; }
+.hero-search .field .ico {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  font-size: 0.95rem; opacity: .55; pointer-events: none;
+}
+.hero-search input, .hero-search select {
+  border: 1.5px solid transparent; background: #f4f5fa;
+  padding: 13px 14px 13px 38px; border-radius: 12px;
+  font-size: 0.9rem; font-weight: 500;
+}
+.hero-search input:focus, .hero-search select:focus {
+  background: #fff; border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(99,102,241,.14);
+}
+.hero-search select { padding-left: 14px; cursor: pointer; }
+.hero-search .btn { padding: 13px 26px; border-radius: 12px; }
+
+@media (max-width: 860px) {
+  .hero-search { grid-template-columns: 1fr 1fr; }
+  .hero-search .field.wide { grid-column: 1 / -1; }
+  .hero-search .btn { grid-column: 1 / -1; width: 100%; }
+}
+
+/* ============ CATEGORY CHIPS ============ */
+.chips {
+  display: flex; flex-wrap: wrap; gap: 9px; justify-content: center;
+  margin-top: 26px; animation: fadeUp .6s .32s ease both;
+}
+.chip {
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.28);
+  color: #fff; padding: 8px 17px; border-radius: 999px;
+  font-size: 0.83rem; font-weight: 700; cursor: pointer;
+  transition: all .2s; font-family: inherit;
+  backdrop-filter: blur(6px);
+}
+.chip:hover { background: rgba(255,255,255,.28); transform: translateY(-2px); }
+.chip.on { background: #fff; color: var(--primary-dark); border-color: #fff; box-shadow: 0 8px 20px rgba(0,0,0,.18); }
+
+/* ============ STATS ============ */
+.stats-row {
+  position: relative; z-index: 5;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px; margin-bottom: 10px;
+}
+.stat {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 22px 20px;
+  display: flex; align-items: center; gap: 15px;
+  box-shadow: var(--shadow);
+  transition: transform .22s cubic-bezier(.34,1.4,.64,1), box-shadow .22s;
+}
+.stat:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.stat .ic {
+  width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
+  display: grid; place-items: center; font-size: 1.35rem;
+}
+.stat .ic.i1 { background: linear-gradient(135deg,#eef2ff,#e0e7ff); }
+.stat .ic.i2 { background: linear-gradient(135deg,#ecfeff,#cffafe); }
+.stat .ic.i3 { background: linear-gradient(135deg,#fdf4ff,#fae8ff); }
+.stat .ic.i4 { background: linear-gradient(135deg,#fef3c7,#fde68a); }
+.stat .ic.i5 { background: linear-gradient(135deg,#fee2e2,#fecaca); }
+.stat .num { font-size: 1.7rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.8px; }
+.stat .lbl { color: var(--muted); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; }
+
+/* ============ INTERNSHIP CARD ============ */
+.intern-card {
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; gap: 13px;
+  padding: 22px; background: #fff;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: transform .26s cubic-bezier(.34,1.4,.64,1), box-shadow .26s, border-color .26s;
+  animation: cardIn .42s ease both;
+}
+@keyframes cardIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.intern-card::after {
+  content: ''; position: absolute; left: 0; top: 0; height: 3px; width: 100%;
+  background: var(--grad); transform: scaleX(0); transform-origin: left;
+  transition: transform .35s ease;
+}
+.intern-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: #dcdff5; }
+.intern-card:hover::after { transform: scaleX(1); }
+
+.card-top { display: flex; gap: 13px; align-items: flex-start; }
+.co-logo {
+  width: 46px; height: 46px; border-radius: 13px; flex-shrink: 0;
+  display: grid; place-items: center; color: #fff;
+  font-weight: 800; font-size: 0.9rem; letter-spacing: .3px;
+  box-shadow: 0 6px 16px rgba(15,23,42,.16);
+}
+.intern-card h3 {
+  font-size: 1.02rem; font-weight: 700; line-height: 1.35;
+  letter-spacing: -0.2px; margin-bottom: 2px;
+}
+.company-name { color: var(--muted); font-weight: 600; font-size: 0.83rem; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 11px; border-radius: 999px;
+  font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .6px;
+}
+.badge-pending     { background: #fef3c7; color: #92400e; }
+.badge-reviewed    { background: #dbeafe; color: #1e40af; }
+.badge-shortlisted { background: #ede9fe; color: #5b21b6; }
+.badge-accepted    { background: #d1fae5; color: #065f46; }
+.badge-rejected    { background: #fee2e2; color: #991b1b; }
+.badge-tag {
+  background: #f1f3fa; color: #4b5563;
+  text-transform: none; letter-spacing: 0; font-size: 0.73rem; font-weight: 700;
+}
+.badge-featured {
+  background: linear-gradient(135deg,#fbbf24,#f59e0b); color: #fff;
+  box-shadow: 0 3px 10px rgba(245,158,11,.35);
+}
+.badge-urgent {
+  background: linear-gradient(135deg,#fb7185,#ef4444); color: #fff;
+  box-shadow: 0 3px 10px rgba(239,68,68,.32);
+}
+.badge-type {
+  background: var(--grad-soft); color: var(--primary-dark);
+  text-transform: none; letter-spacing: 0; font-size: 0.72rem;
+}
+.badge-security {
+  background: linear-gradient(135deg,#0f766e,#059669); color: #fff;
+  box-shadow: 0 3px 10px rgba(16,185,129,.3);
+}
+
+.meta { display: flex; flex-wrap: wrap; gap: 8px 15px; color: var(--muted); font-size: 0.82rem; font-weight: 500; }
+.meta span { display: inline-flex; align-items: center; gap: 5px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.card-foot {
+  margin-top: auto; padding-top: 14px;
+  border-top: 1px dashed var(--border);
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.card-foot .posted { font-size: 0.76rem; color: #94a3b8; font-weight: 600; }
+.card-foot .stipend { font-size: 0.86rem; font-weight: 800; color: #059669; }
+
+/* ============ FILTERS BAR ============ */
+.filter-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px; flex-wrap: wrap; margin-bottom: 20px;
+}
+.filter-bar .count { font-size: 0.9rem; color: var(--muted); font-weight: 600; }
+.filter-bar .count b { color: var(--text); font-weight: 800; }
+
+/* ============ FORMS ============ */
+.form-group { margin-bottom: 16px; }
+.form-group label {
+  display: block; font-size: 0.83rem; font-weight: 700;
+  margin-bottom: 7px; color: var(--text);
+}
+input, select, textarea {
+  width: 100%; padding: 12px 14px;
+  border: 1.5px solid var(--border); border-radius: 11px;
+  font-size: 0.9rem; font-family: inherit; color: var(--text);
+  background: #fbfbfe; transition: all .18s; font-weight: 500;
+}
+input::placeholder, textarea::placeholder { color: #a3aec2; font-weight: 400; }
+input:focus, select:focus, textarea:focus {
+  outline: none; background: #fff; border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(99,102,241,.13);
+}
+textarea { resize: vertical; min-height: 96px; line-height: 1.55; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+
+.form-card { max-width: 470px; margin: 34px auto; }
+.form-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 6px; text-align: center; }
+.form-sub { text-align: center; color: var(--muted); margin-bottom: 24px; font-size: 0.9rem; }
+.form-foot { text-align: center; margin-top: 18px; font-size: 0.88rem; color: var(--muted); font-weight: 500; }
+
+.alert { padding: 13px 16px; border-radius: 12px; font-size: 0.86rem; margin-bottom: 16px; font-weight: 500; line-height: 1.55; }
+.alert-error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+.alert-info  { background: var(--grad-soft); color: #4338ca; border: 1px solid #e0e7ff; }
+.alert strong { font-weight: 800; }
+
+/* ============ TABLE ============ */
+.table-wrap { overflow-x: auto; border-radius: var(--radius); }
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+th, td { text-align: left; padding: 14px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+th {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: .7px;
+  color: var(--muted); background: #fafbff; font-weight: 800; white-space: nowrap;
+}
+tbody tr { transition: background .15s; }
+tbody tr:hover { background: #fafbff; }
+tbody tr:last-child td { border-bottom: none; }
+
+.statusSelect {
+  padding: 7px 10px; font-size: 0.79rem; font-weight: 700;
+  border-radius: 9px; width: auto; min-width: 130px; cursor: pointer;
+  background: #fff;
+}
+
+/* ============ EMPTY / MISC ============ */
+.empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+.empty .big {
+  font-size: 3.2rem; margin-bottom: 10px;
+  filter: drop-shadow(0 8px 16px rgba(99,102,241,.2));
+}
+.empty h3 { color: var(--text); font-size: 1.15rem; margin-bottom: 6px; }
+
+.detail-grid { display: grid; grid-template-columns: 1.7fr 1fr; gap: 22px; align-items: start; }
+@media (max-width: 860px) { .detail-grid { grid-template-columns: 1fr; } }
+
+.section-title { font-size: 0.95rem; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.1px; }
+.divider { height: 1px; background: var(--border); margin: 18px 0; }
+.muted { color: var(--muted); }
+.small { font-size: 0.85rem; }
+.mb-1 { margin-bottom: 8px; } .mb-2 { margin-bottom: 16px; } .mb-3 { margin-bottom: 26px; }
+.mt-2 { margin-top: 16px; } .mt-3 { margin-top: 26px; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+.stack { display: flex; flex-direction: column; gap: 16px; }
+
+.detail-hero {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg,#4f46e5,#7c3aed 55%,#c026d3);
+  border-radius: var(--radius); padding: 34px; color: #fff;
+  box-shadow: 0 20px 48px rgba(79,70,229,.3);
+}
+.detail-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.15) 1px, transparent 1px);
+  background-size: 22px 22px; opacity: .5;
+}
+.detail-hero > * { position: relative; z-index: 1; }
+.detail-hero h1 { font-size: clamp(1.4rem, 3.4vw, 2rem); letter-spacing: -0.9px; line-height: 1.2; margin: 6px 0 4px; }
+.detail-hero .co { color: rgba(255,255,255,.88); font-weight: 700; font-size: 0.98rem; }
+.detail-hero .meta span { color: rgba(255,255,255,.92); }
+.detail-hero .badge { background: rgba(255,255,255,.22); color: #fff; backdrop-filter: blur(6px); }
+
+/* ============ TOAST ============ */
+.toast {
+  position: fixed; bottom: 26px; left: 50%;
+  transform: translateX(-50%) translateY(120px);
+  background: #0f172a; color: #fff;
+  padding: 14px 26px; border-radius: 13px;
+  font-size: 0.89rem; font-weight: 600;
+  opacity: 0; pointer-events: none;
+  transition: all .38s cubic-bezier(.34,1.5,.64,1);
+  z-index: 200; box-shadow: 0 16px 40px rgba(15,23,42,.35);
+  max-width: 90vw; text-align: center;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.error   { background: linear-gradient(135deg,#f43f5e,#dc2626); }
+.toast.success { background: linear-gradient(135deg,#10b981,#059669); }
+
+/* ============ FOOTER (RICH) ============ */
+.footer {
+  background: linear-gradient(180deg, #0b1220 0%, #111827 100%);
+  color: #cbd5e1;
+  margin-top: auto;
+  position: relative;
+  overflow: hidden;
+}
+.footer::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(99,102,241,.12) 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: .6;
+  pointer-events: none;
+}
+.footer-glow {
+  position: absolute; border-radius: 50%; filter: blur(90px);
+  pointer-events: none; z-index: 0;
+}
+.footer-glow.g1 { width: 320px; height: 320px; background: #6366f1; top: -160px; left: -60px; opacity: .25; }
+.footer-glow.g2 { width: 280px; height: 280px; background: #d946ef; bottom: -160px; right: -60px; opacity: .2; }
+
+.footer-top {
+  position: relative; z-index: 2;
+  padding: 56px 0 40px;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr 1.2fr;
+  gap: 38px;
+}
+@media (max-width: 980px) {
+  .footer-top { grid-template-columns: 1fr 1fr 1fr; gap: 34px; }
+  .footer-brand-col { grid-column: 1 / -1; }
+}
+@media (max-width: 620px) {
+  .footer-top { grid-template-columns: 1fr 1fr; padding: 42px 0 30px; gap: 28px; }
+  .footer-brand-col { grid-column: 1 / -1; }
+  .footer-newsletter-col { grid-column: 1 / -1; }
+}
+
+.footer-brand-col .brand {
+  color: #fff; font-size: 1.4rem; margin-bottom: 14px;
+}
+.footer-brand-col .brand em { color: transparent; }
+.footer-brand-col .brand .logo-mark { box-shadow: 0 6px 20px rgba(99,102,241,.5); }
+.footer-brand-col p {
+  color: #94a3b8; font-size: 0.88rem; line-height: 1.7;
+  max-width: 320px; margin-bottom: 20px;
+}
+
+.footer-social {
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.footer-social a {
+  width: 40px; height: 40px; border-radius: 11px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  display: grid; place-items: center;
+  color: #cbd5e1; font-size: 1.05rem;
+  transition: all .22s cubic-bezier(.34,1.4,.64,1);
+}
+.footer-social a:hover {
+  background: var(--grad); color: #fff;
+  transform: translateY(-3px);
+  border-color: transparent;
+  box-shadow: 0 10px 22px rgba(99,102,241,.4);
+}
+
+.footer-col h4 {
+  color: #fff; font-size: 0.82rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 1.1px;
+  margin-bottom: 18px;
+  position: relative; padding-bottom: 10px;
+}
+.footer-col h4::after {
+  content: ''; position: absolute; left: 0; bottom: 0;
+  width: 26px; height: 2px; border-radius: 2px; background: var(--grad);
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.footer-col ul li a {
+  color: #94a3b8; font-size: 0.88rem; font-weight: 500;
+  transition: all .18s; display: inline-flex; align-items: center; gap: 6px;
+}
+.footer-col ul li a:hover { color: #fff; transform: translateX(4px); }
+.footer-col ul li a::before {
+  content: '›'; opacity: .5; font-weight: 800; font-size: 1rem;
+  transition: opacity .18s;
+}
+.footer-col ul li a:hover::before { opacity: 1; }
+
+.footer-newsletter-col p {
+  color: #94a3b8; font-size: 0.86rem; margin-bottom: 14px; line-height: 1.65;
+}
+.newsletter-form {
+  display: flex; gap: 8px; margin-bottom: 18px;
+}
+.newsletter-form input {
+  background: rgba(255,255,255,.06);
+  border: 1.5px solid rgba(255,255,255,.12);
+  color: #fff; padding: 11px 14px; font-size: 0.85rem;
+  border-radius: 11px;
+}
+.newsletter-form input::placeholder { color: #64748b; }
+.newsletter-form input:focus {
+  background: rgba(255,255,255,.09);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(99,102,241,.18);
+}
+.newsletter-form button {
+  padding: 11px 18px; border-radius: 11px; font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.footer-badge-row {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.footer-badge-row span {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: .4px;
+  background: rgba(99,102,241,.14);
+  border: 1px solid rgba(99,102,241,.28);
+  color: #c7d2fe;
+  padding: 5px 10px; border-radius: 999px;
+}
+
+.footer-bottom {
+  position: relative; z-index: 2;
+  border-top: 1px solid rgba(255,255,255,.07);
+  padding: 22px 0;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px; flex-wrap: wrap;
+  font-size: 0.82rem; color: #94a3b8;
+}
+.footer-bottom .made {
+  display: flex; align-items: center; gap: 6px;
+}
+.footer-bottom .made .heart {
+  display: inline-block; animation: beat 1.4s ease-in-out infinite;
+}
+@keyframes beat {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.22); }
+}
+.footer-bottom-links { display: flex; gap: 18px; flex-wrap: wrap; }
+.footer-bottom-links a { color: #94a3b8; font-weight: 600; font-size: 0.82rem; }
+.footer-bottom-links a:hover { color: #fff; }
+
+.footer-cities {
+  position: relative; z-index: 2;
+  border-top: 1px solid rgba(255,255,255,.07);
+  padding: 20px 0;
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+}
+.footer-cities .label {
+  font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .9px; color: #64748b; margin-right: 6px;
+}
+.footer-cities a {
+  font-size: 0.8rem; font-weight: 600; color: #94a3b8;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  padding: 5px 12px; border-radius: 999px;
+  transition: all .2s;
+}
+.footer-cities a:hover {
+  background: rgba(99,102,241,.2);
+  border-color: rgba(99,102,241,.4);
+  color: #c7d2fe;
+  transform: translateY(-2px);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 700px) {
+  .grid-3 { grid-template-columns: 1fr; }
+  .hero { padding: 46px 0 76px; }
+  .topbar-inner { height: 64px; }
+  .brand { font-size: 1.15rem; }
+  .brand .logo-mark { width: 32px; height: 32px; font-size: .95rem; }
+  .nav a, .nav button.navlink { padding: 8px 11px; font-size: 0.84rem; }
+  .user-chip { padding: 4px 12px 4px 5px; font-size: .8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= TOPBAR ================= -->
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a href="#/" class="brand" onclick="App.go('#/');return false;">
+      <span class="logo-mark">🎓</span> Intern<em>Hub</em>
+    </a>
+    <nav id="nav" class="nav"></nav>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="footer-glow g1"></div>
+  <div class="footer-glow g2"></div>
+
+  <div class="container">
+    <div class="footer-top">
+      <!-- Brand column -->
+      <div class="footer-brand-col">
+        <a href="#/" class="brand" onclick="App.go('#/');return false;">
+          <span class="logo-mark">🎓</span> Intern<em>Hub</em>
+        </a>
+        <p>
+          India's most loved internship portal. We connect ambitious students with
+          hand-picked opportunities at startups, MNCs and research labs — across
+          15+ cities and remote.
+        </p>
+        <div class="footer-social">
+          <a href="#" onclick="return false;" title="Twitter / X" aria-label="Twitter">𝕏</a>
+          <a href="#" onclick="return false;" title="LinkedIn" aria-label="LinkedIn">in</a>
+          <a href="#" onclick="return false;" title="Instagram" aria-label="Instagram">📷</a>
+          <a href="#" onclick="return false;" title="GitHub" aria-label="GitHub">⌨</a>
+          <a href="#" onclick="return false;" title="YouTube" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+
+      <!-- For Students -->
+      <div class="footer-col">
+        <h4>For Students</h4>
+        <ul>
+          <li><a href="#/" onclick="App.go('#/');return false;">Browse Internships</a></li>
+          <li><a href="#/" onclick="App.state.category='Engineering';App.go('#/');return false;">Engineering Roles</a></li>
+          <li><a href="#/" onclick="App.state.category='Design';App.go('#/');return false;">Design Roles</a></li>
+          <li><a href="#/" onclick="App.state.category='Security';App.go('#/');return false;">Cybersecurity Roles</a></li>
+          <li><a href="#/register" onclick="App.go('#/register');return false;">Create Account</a></li>
+          <li><a href="#/my-applications" onclick="App.go('#/my-applications');return false;">My Applications</a></li>
+        </ul>
+      </div>
+
+      <!-- For Companies -->
+      <div class="footer-col">
+        <h4>For Companies</h4>
+        <ul>
+          <li><a href="#/post" onclick="App.go('#/post');return false;">Post an Internship</a></li>
+          <li><a href="#/dashboard" onclick="App.go('#/dashboard');return false;">Company Dashboard</a></li>
+          <li><a href="#/register" onclick="App.go('#/register');return false;">Register Company</a></li>
+          <li><a href="#" onclick="return false;">Pricing</a></li>
+          <li><a href="#" onclick="return false;">Hire Talent</a></li>
+        </ul>
+      </div>
+
+      <!-- Explore -->
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#/" onclick="App.state.location='Surat';App.go('#/');return false;">Internships in Surat</a></li>
+          <li><a href="#/" onclick="App.state.location='Bangalore';App.go('#/');return false;">Internships in Bangalore</a></li>
+          <li><a href="#/" onclick="App.state.location='Remote';App.go('#/');return false;">Remote Internships</a></li>
+          <li><a href="#" onclick="return false;">Career Blog</a></li>
+          <li><a href="#" onclick="return false;">Resume Tips</a></li>
+          <li><a href="#" onclick="return false;">Help Center</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="footer-col footer-newsletter-col">
+        <h4>Stay Updated</h4>
+        <p>Get the latest internships, career tips and hiring trends delivered weekly.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); window.showToast && window.showToast('Subscribed! 🎉 Check your inbox.', 'success'); this.reset();">
+          <input type="email" placeholder="you@example.com" required />
+          <button class="btn" type="submit">Join</button>
+        </form>
+        <div class="footer-badge-row">
+          <span>✓ 100% Free</span>
+          <span>✓ No Spam</span>
+          <span>✓ Weekly</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popular cities strip -->
+    <div class="footer-cities">
+      <span class="label">Popular Cities</span>
+      <a href="#/" onclick="App.state.location='Surat';App.go('#/');return false;">Surat</a>
+      <a href="#/" onclick="App.state.location='Bangalore';App.go('#/');return false;">Bangalore</a>
+      <a href="#/" onclick="App.state.location='Mumbai';App.go('#/');return false;">Mumbai</a>
+      <a href="#/" onclick="App.state.location='Delhi';App.go('#/');return false;">Delhi</a>
+      <a href="#/" onclick="App.state.location='Hyderabad';App.go('#/');return false;">Hyderabad</a>
+      <a href="#/" onclick="App.state.location='Pune';App.go('#/');return false;">Pune</a>
+      <a href="#/" onclick="App.state.location='Chennai';App.go('#/');return false;">Chennai</a>
+      <a href="#/" onclick="App.state.location='Kolkata';App.go('#/');return false;">Kolkata</a>
+      <a href="#/" onclick="App.state.location='Ahmedabad';App.go('#/');return false;">Ahmedabad</a>
+      <a href="#/" onclick="App.state.location='Remote';App.go('#/');return false;">Remote</a>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <div class="made">
+        Built with <span class="heart">❤️</span> for students · <b style="color:#fff">InternHub</b> © <span id="year">2026</span>
+      </div>
+      <div class="footer-bottom-links">
+        <a href="#" onclick="return false;">Privacy Policy</a>
+        <a href="#" onclick="return false;">Terms of Service</a>
+        <a href="#" onclick="return false;">Cookies</a>
+        <a href="#" onclick="return false;">Contact Us</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+
+<script>
+/* =====================================================================
+   InternHub — Single-File Internship Portal (v3)
+   "Backend" layer = localStorage-backed store with async API methods.
+   ===================================================================== */
+
+const DB = (() => {
+  const KEY = 'internhub_db_v3';
+
+  /* ------------------- SEED DATA ------------------- */
+  const seed = () => ({
+    users: [
+      /* ---------- STUDENTS ---------- */
+      { id:'u1', role:'student', name:'Aarav Sharma', email:'student@demo.com', password:'demo123',
+        college:'IIT Bombay', skills:'React, Node.js, MongoDB', resume:'https://example.com/resume/aarav.pdf' },
+      { id:'u2', role:'student', name:'Priya Verma', email:'priya@demo.com', password:'demo123',
+        college:'NIT Trichy', skills:'Python, Django, SQL', resume:'https://example.com/resume/priya.pdf' },
+      { id:'u3', role:'student', name:'Rohan Mehta', email:'rohan@demo.com', password:'demo123',
+        college:'BITS Pilani', skills:'Java, Spring Boot, AWS', resume:'https://example.com/resume/rohan.pdf' },
+      { id:'u4', role:'student', name:'Sneha Iyer', email:'sneha@demo.com', password:'demo123',
+        college:'VIT Vellore', skills:'Figma, UI/UX, HTML/CSS', resume:'https://example.com/resume/sneha.pdf' },
+      { id:'u5', role:'student', name:'Karan Patel', email:'karan@demo.com', password:'demo123',
+        college:'SVNIT Surat', skills:'Networking, Linux, Python', resume:'https://example.com/resume/karan.pdf' },
+
+      /* ---------- COMPANIES ---------- */
+      { id:'c1', role:'company', name:'TechNova Solutions', email:'company@demo.com', password:'demo123',
+        website:'https://technova.example.com', industry:'SaaS / Product',
+        about:'A fast-growing product company building collaboration SaaS used by 40,000+ teams worldwide.' },
+      { id:'c2', role:'company', name:'DataWorks AI', email:'dataworks@demo.com', password:'demo123',
+        website:'https://dataworks.example.com', industry:'AI & Analytics',
+        about:'Applied AI and analytics consultancy helping enterprises turn data into decisions.' },
+      { id:'c3', role:'company', name:'PixelCraft Studios', email:'pixelcraft@demo.com', password:'demo123',
+        website:'https://pixelcraft.example.com', industry:'Creative Agency',
+        about:'Award-winning creative studio crafting brands, films and digital experiences.' },
+      { id:'c4', role:'company', name:'CloudSprint', email:'cloudsprint@demo.com', password:'demo123',
+        website:'https://cloudsprint.example.com', industry:'Cloud Infrastructure',
+        about:'Cloud-native engineering partner helping startups scale reliably on AWS & GCP.' },
+      { id:'c5', role:'company', name:'FinEdge Capital', email:'finedge@demo.com', password:'demo123',
+        website:'https://finedge.example.com', industry:'Fintech & Finance',
+        about:'A modern fintech firm reimagining investing, lending and wealth for young India.' },
+      { id:'c6', role:'company', name:'GreenLeaf Organics', email:'greenleaf@demo.com', password:'demo123',
+        website:'https://greenleaf.example.com', industry:'Sustainability',
+        about:'Sustainable agri-tech brand connecting organic farms to urban households.' },
+      { id:'c7', role:'company', name:'MedTech Labs', email:'medtech@demo.com', password:'demo123',
+        website:'https://medtech.example.com', industry:'Healthcare Technology',
+        about:'Building connected medical devices and clinical data platforms for hospitals.' },
+      { id:'c8', role:'company', name:'EduSpark Learning', email:'eduspark@demo.com', password:'demo123',
+        website:'https://eduspark.example.com', industry:'EdTech',
+        about:'Personalised learning platform used by 2 million students across India.' },
+      { id:'c9', role:'company', name:'Quantum Robotics', email:'quantum@demo.com', password:'demo123',
+        website:'https://quantumrobotics.example.com', industry:'Robotics & Automation',
+        about:'Industrial robotics and autonomous systems for smart manufacturing.' },
+      { id:'c10', role:'company', name:'TravelNest', email:'travelnest@demo.com', password:'demo123',
+        website:'https://travelnest.example.com', industry:'Travel & Hospitality',
+        about:'Curated travel experiences and homestays across 120+ Indian destinations.' },
+      { id:'c11', role:'company', name:'SecureShield Cyber', email:'secureshield@demo.com', password:'demo123',
+        website:'https://secureshield.example.com', industry:'Cybersecurity',
+        about:'A leading cybersecurity firm protecting enterprises with SOC, red team and compliance services.' },
+      { id:'c12', role:'company', name:'Surat Digital Labs', email:'suratlabs@demo.com', password:'demo123',
+        website:'https://suratdigital.example.com', industry:'Digital & IT Services',
+        about:'Surat-based digital agency delivering web, mobile and security solutions to global clients.' }
+    ],
+
+    internships: [
+      /* ================= TechNova (Bangalore / Noida) ================= */
+      { id:'i1', companyId:'c1', companyName:'TechNova Solutions', title:'Frontend Developer Intern',
+        location:'Bangalore', type:'Internship', category:'Engineering', stipend:'₹25,000 / month', duration:'6 months',
+        skills:['React','JavaScript','CSS'], openings:3, deadline:'2026-12-31', featured:true, urgent:false,
+        postedAt: Date.now() - 86400000*1, active:true,
+        description:'Work with our product team to build modern, responsive user interfaces for our SaaS dashboard. You will collaborate with designers and backend engineers to ship features used by thousands of customers every day.',
+        requirements:'Strong HTML/CSS/JS fundamentals. Familiarity with React and Git. Good communication and a willingness to learn.' },
+
+      { id:'i2', companyId:'c1', companyName:'TechNova Solutions', title:'Backend Engineering Intern',
+        location:'Remote', type:'Internship', category:'Engineering', stipend:'₹30,000 / month', duration:'6 months',
+        skills:['Node.js','Express','PostgreSQL'], openings:2, deadline:'2026-11-30', featured:false, urgent:true,
+        postedAt: Date.now() - 86400000*3, active:true,
+        description:'Build and maintain REST APIs, optimise database queries and help scale our backend services to handle millions of requests.',
+        requirements:'Knowledge of Node.js/Express, relational databases and REST principles. Bonus: Docker experience.' },
+
+      { id:'i20', companyId:'c1', companyName:'TechNova Solutions', title:'QA Automation Intern',
+        location:'Noida', type:'Internship', category:'Engineering', stipend:'₹24,000 / month', duration:'6 months',
+        skills:['Selenium','Java','Testing'], openings:2, deadline:'2026-12-20', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*6, active:true,
+        description:'Design and maintain automated test suites for our web platform. Work closely with developers to catch bugs before release.',
+        requirements:'Understanding of software testing fundamentals. Exposure to Selenium or similar tools.' },
+
+      /* ================= DataWorks AI (Hyderabad / Bangalore) ================= */
+      { id:'i3', companyId:'c2', companyName:'DataWorks AI', title:'Data Science Intern',
+        location:'Hyderabad', type:'Internship', category:'Data', stipend:'₹35,000 / month', duration:'3 months',
+        skills:['Python','Pandas','Machine Learning'], openings:1, deadline:'2026-11-15', featured:true, urgent:true,
+        postedAt: Date.now() - 86400000*2, active:true,
+        description:'Assist our data team in building predictive models, cleaning large datasets and generating insights for client projects across retail and finance.',
+        requirements:'Solid Python skills, understanding of ML algorithms, hands-on experience with Pandas/NumPy.' },
+
+      { id:'i4', companyId:'c2', companyName:'DataWorks AI', title:'UI/UX Design Intern',
+        location:'Remote', type:'Part-time', category:'Design', stipend:'₹20,000 / month', duration:'4 months',
+        skills:['Figma','UI Design','Prototyping'], openings:2, deadline:'2026-12-10', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*4, active:true,
+        description:'Design intuitive interfaces for our analytics products. Create wireframes, interactive prototypes and contribute to our design system.',
+        requirements:'Portfolio of design work. Proficiency with Figma. A strong eye for detail and typography.' },
+
+      { id:'i21', companyId:'c2', companyName:'DataWorks AI', title:'NLP Research Intern',
+        location:'Bangalore', type:'Internship', category:'Research', stipend:'₹38,000 / month', duration:'6 months',
+        skills:['Python','Transformers','NLP'], openings:1, deadline:'2026-12-05', featured:true, urgent:false,
+        postedAt: Date.now() - 86400000*7, active:true,
+        description:'Work on cutting-edge natural language processing problems — document understanding, summarisation and multilingual models.',
+        requirements:'Deep learning fundamentals, familiarity with HuggingFace Transformers, published work is a plus.' },
+
+      /* ================= PixelCraft Studios ================= */
+      { id:'i5', companyId:'c3', companyName:'PixelCraft Studios', title:'Motion Graphics Intern',
+        location:'Mumbai', type:'Internship', category:'Design', stipend:'₹18,000 / month', duration:'3 months',
+        skills:['After Effects','Premiere Pro','Animation'], openings:2, deadline:'2026-11-25', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*5, active:true,
+        description:'Create scroll-stopping motion graphics and animated brand assets for top D2C and entertainment clients.',
+        requirements:'Strong reel/portfolio. Command over After Effects and Premiere Pro. Sense of timing and rhythm.' },
+
+      { id:'i6', companyId:'c3', companyName:'PixelCraft Studios', title:'Social Media Marketing Intern',
+        location:'Mumbai', type:'Internship', category:'Marketing', stipend:'₹15,000 / month', duration:'4 months',
+        skills:['Instagram','Content','Canva'], openings:3, deadline:'2026-12-15', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*9, active:true,
+        description:'Plan and execute social media campaigns, create content calendars and track engagement for our client brands.',
+        requirements:'Active on social platforms, strong copywriting, basic design skills with Canva.' },
+
+      { id:'i23', companyId:'c3', companyName:'PixelCraft Studios', title:'Brand Design Intern',
+        location:'Chandigarh', type:'Internship', category:'Design', stipend:'₹17,000 / month', duration:'3 months',
+        skills:['Illustrator','Branding','Typography'], openings:1, deadline:'2026-11-28', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*11, active:true,
+        description:'Help build visual identities for emerging brands — logos, colour systems, packaging and brand guidelines.',
+        requirements:'Portfolio showing branding projects. Proficiency in Illustrator and Photoshop.' },
+
+      /* ================= CloudSprint ================= */
+      { id:'i7', companyId:'c4', companyName:'CloudSprint', title:'DevOps Intern',
+        location:'Pune', type:'Internship', category:'Engineering', stipend:'₹28,000 / month', duration:'6 months',
+        skills:['Docker','Kubernetes','AWS'], openings:2, deadline:'2026-12-18', featured:true, urgent:false,
+        postedAt: Date.now() - 86400000*2, active:true,
+        description:'Automate build and deployment pipelines, manage Kubernetes clusters and improve observability for our clients.',
+        requirements:'Understanding of Linux, Docker and CI/CD concepts. AWS certification is a bonus.' },
+
+      { id:'i8', companyId:'c4', companyName:'CloudSprint', title:'Cloud Support Intern',
+        location:'Pune', type:'Internship', category:'Engineering', stipend:'₹22,000 / month', duration:'4 months',
+        skills:['Linux','AWS','Networking'], openings:2, deadline:'2026-11-20', featured:false, urgent:true,
+        postedAt: Date.now() - 86400000*8, active:true,
+        description:'Provide first-line cloud infrastructure support, troubleshoot networking issues and document solutions.',
+        requirements:'Basic Linux command line, networking fundamentals, willingness to learn cloud platforms.' },
+
+      { id:'i22', companyId:'c4', companyName:'CloudSprint', title:'Frontend Intern (React)',
+        location:'Kochi', type:'Internship', category:'Engineering', stipend:'₹20,000 / month', duration:'3 months',
+        skills:['React','Tailwind','TypeScript'], openings:2, deadline:'2026-12-08', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*12, active:true,
+        description:'Build internal dashboards and customer-facing portals with React and Tailwind CSS.',
+        requirements:'Good grasp of React hooks, component design and responsive layouts.' },
+
+      /* ================= FinEdge Capital ================= */
+      { id:'i9', companyId:'c5', companyName:'FinEdge Capital', title:'Investment Banking Intern',
+        location:'Gurgaon', type:'Internship', category:'Finance', stipend:'₹40,000 / month', duration:'3 months',
+        skills:['Excel','Financial Modelling','Valuation'], openings:2, deadline:'2026-11-18', featured:true, urgent:true,
+        postedAt: Date.now() - 86400000*1, active:true,
+        description:'Support live deal execution — building financial models, preparing pitch decks and conducting industry research.',
+        requirements:'Strong accounting and Excel skills. Interest in capital markets. CFA Level 1 is a plus.' },
+
+      { id:'i10', companyId:'c5', companyName:'FinEdge Capital', title:'Risk Analytics Intern',
+        location:'Mumbai', type:'Internship', category:'Data', stipend:'₹32,000 / month', duration:'6 months',
+        skills:['Python','SQL','Statistics'], openings:1, deadline:'2026-12-22', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*10, active:true,
+        description:'Build credit risk models, monitor portfolio performance and automate reporting dashboards.',
+        requirements:'Statistics background, proficiency in Python and SQL, attention to detail.' },
+
+      { id:'i24', companyId:'c5', companyName:'FinEdge Capital', title:'Fintech Product Intern',
+        location:'Indore', type:'Internship', category:'Operations', stipend:'₹25,000 / month', duration:'4 months',
+        skills:['Product','SQL','UPI'], openings:2, deadline:'2026-12-28', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*13, active:true,
+        description:'Work with the payments team to define product requirements, analyse user funnels and ship UPI-based features.',
+        requirements:'Analytical mindset, basic SQL, keen interest in fintech and digital payments.' },
+
+      /* ================= GreenLeaf Organics ================= */
+      { id:'i11', companyId:'c6', companyName:'GreenLeaf Organics', title:'Sustainability Research Intern',
+        location:'Ahmedabad', type:'Internship', category:'Research', stipend:'₹16,000 / month', duration:'3 months',
+        skills:['Research','ESG','Report Writing'], openings:2, deadline:'2026-11-22', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*14, active:true,
+        description:'Research sustainable farming practices, compile ESG reports and help build our impact measurement framework.',
+        requirements:'Strong research and writing skills. Interest in sustainability and agri-tech.' },
+
+      /* ================= MedTech Labs ================= */
+      { id:'i12', companyId:'c7', companyName:'MedTech Labs', title:'Biomedical Engineering Intern',
+        location:'Chennai', type:'Internship', category:'Engineering', stipend:'₹26,000 / month', duration:'6 months',
+        skills:['MATLAB','Signal Processing','Embedded'], openings:2, deadline:'2026-12-02', featured:true, urgent:false,
+        postedAt: Date.now() - 86400000*6, active:true,
+        description:'Assist in designing and testing connected medical devices — sensor calibration, signal processing and validation.',
+        requirements:'Biomedical/Electronics background, MATLAB proficiency, understanding of biosignals.' },
+
+      { id:'i13', companyId:'c7', companyName:'MedTech Labs', title:'Clinical Data Intern',
+        location:'Chennai', type:'Internship', category:'Data', stipend:'₹24,000 / month', duration:'4 months',
+        skills:['Excel','SQL','Clinical Trials'], openings:1, deadline:'2026-11-27', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*15, active:true,
+        description:'Manage clinical trial datasets, ensure data quality and generate reports for regulatory submissions.',
+        requirements:'Life sciences or statistics background, advanced Excel, basic SQL.' },
+
+      /* ================= EduSpark Learning ================= */
+      { id:'i14', companyId:'c8', companyName:'EduSpark Learning', title:'Content Writing Intern',
+        location:'Remote', type:'Internship', category:'Content', stipend:'₹14,000 / month', duration:'3 months',
+        skills:['Writing','SEO','Editing'], openings:3, deadline:'2026-11-29', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*4, active:true,
+        description:'Write engaging blogs, lesson scripts and marketing copy for our K-12 learning platform.',
+        requirements:'Excellent written English, basic SEO understanding, ability to simplify complex topics.' },
+
+      { id:'i15', companyId:'c8', companyName:'EduSpark Learning', title:'Product Management Intern',
+        location:'Delhi', type:'Internship', category:'Operations', stipend:'₹30,000 / month', duration:'6 months',
+        skills:['Roadmaps','Analytics','Jira'], openings:1, deadline:'2026-12-12', featured:true, urgent:false,
+        postedAt: Date.now() - 86400000*3, active:true,
+        description:'Own a small product area end-to-end — write specs, prioritise the backlog and analyse feature impact.',
+        requirements:'Structured thinking, comfort with data, excellent communication. Prior PM internship is a plus.' },
+
+      /* ================= Quantum Robotics ================= */
+      { id:'i16', companyId:'c9', companyName:'Quantum Robotics', title:'Robotics Software Intern',
+        location:'Kolkata', type:'Internship', category:'Engineering', stipend:'₹30,000 / month', duration:'6 months',
+        skills:['C++','ROS','Python'], openings:2, deadline:'2026-12-06', featured:true, urgent:true,
+        postedAt: Date.now() - 86400000*1, active:true,
+        description:'Develop motion planning and perception modules for autonomous mobile robots deployed in warehouses.',
+        requirements:'Strong C++ and Python, familiarity with ROS, understanding of kinematics.' },
+
+      { id:'i17', companyId:'c9', companyName:'Quantum Robotics', title:'Embedded Systems Intern',
+        location:'Kolkata', type:'Internship', category:'Engineering', stipend:'₹27,000 / month', duration:'6 months',
+        skills:['C','Microcontrollers','PCB'], openings:2, deadline:'2026-11-24', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*16, active:true,
+        description:'Design and debug firmware for motor controllers and sensor boards used in our robotic arms.',
+        requirements:'Embedded C, experience with STM32/Arduino, basic PCB design knowledge.' },
+
+      /* ================= TravelNest ================= */
+      { id:'i18', companyId:'c10', companyName:'TravelNest', title:'Travel Operations Intern',
+        location:'Jaipur', type:'Internship', category:'Operations', stipend:'₹15,000 / month', duration:'3 months',
+        skills:['Coordination','Excel','Customer Service'], openings:2, deadline:'2026-11-26', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*17, active:true,
+        description:'Coordinate with homestay partners, manage bookings and ensure smooth guest experiences across Rajasthan.',
+        requirements:'Great communication, organisational skills, willingness to travel occasionally.' },
+
+      { id:'i19', companyId:'c10', companyName:'TravelNest', title:'Growth Marketing Intern',
+        location:'Remote', type:'Internship', category:'Marketing', stipend:'₹18,000 / month', duration:'4 months',
+        skills:['SEO','Google Ads','Analytics'], openings:2, deadline:'2026-12-14', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*18, active:true,
+        description:'Run performance marketing campaigns, optimise SEO and analyse acquisition funnels to drive bookings.',
+        requirements:'Understanding of digital marketing channels, comfort with Excel/Sheets, analytical mindset.' },
+
+      /* ================= 🔐 SecureShield Cyber — SURAT + Cybersecurity across categories ================= */
+
+      { id:'i25', companyId:'c11', companyName:'SecureShield Cyber', title:'Cybersecurity Analyst Intern (SOC)',
+        location:'Surat', type:'Internship', category:'Security', stipend:'₹28,000 / month', duration:'6 months',
+        skills:['SIEM','Splunk','Incident Response'], openings:3, deadline:'2026-12-25', featured:true, urgent:true,
+        postedAt: Date.now() - 86400000*1, active:true,
+        description:'Join our 24×7 Security Operations Centre in Surat. Monitor alerts, triage security incidents, analyse logs in Splunk and help contain threats in real time for enterprise clients.',
+        requirements:'Understanding of networking (TCP/IP, DNS), basic Linux, familiarity with SIEM tools. Security+ or equivalent is a plus.' },
+
+      { id:'i26', companyId:'c11', companyName:'SecureShield Cyber', title:'Penetration Testing Intern (Red Team)',
+        location:'Bangalore', type:'Internship', category:'Security', stipend:'₹35,000 / month', duration:'6 months',
+        skills:['Burp Suite','Metasploit','OWASP Top 10'], openings:2, deadline:'2026-12-05', featured:true, urgent:false,
+        postedAt: Date.now() - 86400000*2, active:true,
+        description:'Perform web, mobile and network penetration tests under senior red team guidance. Write detailed PoC reports and remediation guidance for clients across BFSI and healthcare.',
+        requirements:'Deep understanding of OWASP Top 10, hands-on with Burp Suite, Nmap and Metasploit. CTF experience preferred.' },
+
+      { id:'i27', companyId:'c11', companyName:'SecureShield Cyber', title:'Application Security (AppSec) Intern',
+        location:'Pune', type:'Internship', category:'Engineering', stipend:'₹30,000 / month', duration:'6 months',
+        skills:['SAST','DAST','Secure SDLC'], openings:2, deadline:'2026-12-15', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*3, active:true,
+        description:'Work with development teams to integrate security into CI/CD. Run SAST/DAST scans, review code for vulnerabilities and help build secure coding guidelines.',
+        requirements:'Understanding of web app security, familiarity with SAST/DAST tools, basic scripting in Python or Bash.' },
+
+      { id:'i28', companyId:'c11', companyName:'SecureShield Cyber', title:'Cloud Security Intern',
+        location:'Remote', type:'Internship', category:'Security', stipend:'₹32,000 / month', duration:'6 months',
+        skills:['AWS Security','IAM','Terraform'], openings:2, deadline:'2026-12-20', featured:true, urgent:false,
+        postedAt: Date.now() - 86400000*4, active:true,
+        description:'Secure multi-cloud environments (AWS, GCP, Azure). Audit IAM policies, review Terraform infrastructure and help clients achieve compliance with CIS benchmarks.',
+        requirements:'Cloud fundamentals, understanding of IAM, familiarity with IaC tools like Terraform. AWS Security Specialty is a bonus.' },
+
+      { id:'i29', companyId:'c11', companyName:'SecureShield Cyber', title:'Network Security Intern',
+        location:'Mumbai', type:'Internship', category:'Security', stipend:'₹26,000 / month', duration:'4 months',
+        skills:['Firewalls','IDS/IPS','Wireshark'], openings:2, deadline:'2026-11-30', featured:false, urgent:true,
+        postedAt: Date.now() - 86400000*5, active:true,
+        description:'Configure and harden firewalls, analyse network traffic in Wireshark, and deploy IDS/IPS solutions for enterprise networks.',
+        requirements:'Strong networking fundamentals, CCNA-level knowledge, hands-on with Wireshark or tcpdump.' },
+
+      { id:'i30', companyId:'c11', companyName:'SecureShield Cyber', title:'GRC & Compliance Intern',
+        location:'Gurgaon', type:'Internship', category:'Security', stipend:'₹24,000 / month', duration:'6 months',
+        skills:['ISO 27001','GDPR','Risk Assessment'], openings:1, deadline:'2026-12-10', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*6, active:true,
+        description:'Support governance, risk and compliance engagements — help clients prepare for ISO 27001, SOC 2 and GDPR audits, draft policies and conduct risk assessments.',
+        requirements:'Understanding of security frameworks, strong documentation skills, attention to detail. CISA/ISO LA is a plus.' },
+
+      { id:'i31', companyId:'c11', companyName:'SecureShield Cyber', title:'Threat Intelligence Intern',
+        location:'Hyderabad', type:'Internship', category:'Research', stipend:'₹30,000 / month', duration:'6 months',
+        skills:['OSINT','Threat Hunting','MITRE ATT&CK'], openings:1, deadline:'2026-12-18', featured:true, urgent:false,
+        postedAt: Date.now() - 86400000*7, active:true,
+        description:'Research emerging threats, track APT groups, build MITRE ATT&CK mappings and produce actionable threat intel reports for our clients.',
+        requirements:'Curiosity for cyber threats, familiarity with OSINT tools, basic understanding of MITRE ATT&CK.' },
+
+      { id:'i32', companyId:'c11', companyName:'SecureShield Cyber', title:'Incident Response Intern',
+        location:'Surat', type:'Internship', category:'Operations', stipend:'₹27,000 / month', duration:'6 months',
+        skills:['DFIR','Forensics','Malware Analysis'], openings:2, deadline:'2026-12-22', featured:false, urgent:true,
+        postedAt: Date.now() - 86400000*8, active:true,
+        description:'Be part of our Digital Forensics & Incident Response team in Surat. Investigate breaches, perform memory & disk forensics, and help contain live incidents.',
+        requirements:'Understanding of Windows/Linux forensics, familiarity with tools like Volatility, Autopsy or FTK.' },
+
+      { id:'i33', companyId:'c11', companyName:'SecureShield Cyber', title:'Cybersecurity Awareness & Training Intern',
+        location:'Surat', type:'Part-time', category:'Content', stipend:'₹18,000 / month', duration:'3 months',
+        skills:['Content','Training','Phishing Simulation'], openings:2, deadline:'2026-12-12', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*9, active:true,
+        description:'Design phishing simulation campaigns, create security awareness content and run training sessions for client employees — all from our Surat studio.',
+        requirements:'Strong writing and presentation skills, basic understanding of cyber hygiene and social engineering.' },
+
+      { id:'i34', companyId:'c11', companyName:'SecureShield Cyber', title:'Security Automation Intern (DevSecOps)',
+        location:'Bangalore', type:'Internship', category:'Engineering', stipend:'₹34,000 / month', duration:'6 months',
+        skills:['Python','CI/CD','Ansible'], openings:2, deadline:'2026-12-28', featured:true, urgent:false,
+        postedAt: Date.now() - 86400000*10, active:true,
+        description:'Automate security workflows — build Python scripts to integrate scanners into CI/CD pipelines, orchestrate SOAR playbooks and reduce manual SOC effort.',
+        requirements:'Strong Python skills, familiarity with CI/CD (GitHub Actions/Jenkins) and configuration management tools.' },
+
+      /* ================= Surat Digital Labs — Surat roles across categories ================= */
+      { id:'i35', companyId:'c12', companyName:'Surat Digital Labs', title:'Full Stack Developer Intern',
+        location:'Surat', type:'Internship', category:'Engineering', stipend:'₹22,000 / month', duration:'6 months',
+        skills:['MERN','REST APIs','MongoDB'], openings:3, deadline:'2026-12-20', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*2, active:true,
+        description:'Build full-stack web apps for our global clients using the MERN stack. Ship features end-to-end — from database design to polished UI.',
+        requirements:'Comfort with JavaScript, React and Node.js. Portfolio of personal or academic projects.' },
+
+      { id:'i36', companyId:'c12', companyName:'Surat Digital Labs', title:'UI/UX Design Intern',
+        location:'Surat', type:'Internship', category:'Design', stipend:'₹18,000 / month', duration:'4 months',
+        skills:['Figma','Wireframing','User Research'], openings:2, deadline:'2026-12-08', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*11, active:true,
+        description:'Design clean, modern interfaces for web and mobile products. Conduct user research, create wireframes and deliver high-fidelity Figma mockups.',
+        requirements:'Strong design portfolio, proficiency with Figma, understanding of design systems.' },
+
+      { id:'i37', companyId:'c12', companyName:'Surat Digital Labs', title:'Digital Marketing Intern',
+        location:'Surat', type:'Internship', category:'Marketing', stipend:'₹15,000 / month', duration:'3 months',
+        skills:['SEO','Meta Ads','Google Analytics'], openings:2, deadline:'2026-11-28', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*13, active:true,
+        description:'Run SEO and paid campaigns for our client brands. Analyse results in Google Analytics and prepare performance reports.',
+        requirements:'Understanding of SEO basics, familiarity with Google Ads or Meta Ads, analytical mindset.' },
+
+      { id:'i38', companyId:'c12', companyName:'Surat Digital Labs', title:'Data Analyst Intern',
+        location:'Surat', type:'Internship', category:'Data', stipend:'₹24,000 / month', duration:'6 months',
+        skills:['SQL','Power BI','Excel'], openings:2, deadline:'2026-12-16', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*14, active:true,
+        description:'Analyse client business data, build dashboards in Power BI and generate insights that drive decision-making.',
+        requirements:'Solid SQL, comfort with Power BI or Tableau, strong Excel skills.' },
+
+      { id:'i39', companyId:'c12', companyName:'Surat Digital Labs', title:'SOC Analyst Intern',
+        location:'Surat', type:'Internship', category:'Security', stipend:'₹26,000 / month', duration:'6 months',
+        skills:['Splunk','Sentry','Threat Monitoring'], openings:2, deadline:'2026-12-24', featured:true, urgent:false,
+        postedAt: Date.now() - 86400000*3, active:true,
+        description:'Monitor client environments for threats, triage alerts and escalate incidents. Hands-on exposure to real-world attacks in a live SOC.',
+        requirements:'Basic networking knowledge, willingness to learn SIEM tools, attention to detail.' },
+
+      { id:'i40', companyId:'c12', companyName:'Surat Digital Labs', title:'Business Development Intern',
+        location:'Surat', type:'Internship', category:'Operations', stipend:'₹16,000 / month', duration:'3 months',
+        skills:['Sales','CRM','Communication'], openings:2, deadline:'2026-12-02', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*15, active:true,
+        description:'Identify new business opportunities, manage leads in CRM, and support the sales team in closing deals with international clients.',
+        requirements:'Excellent communication, interest in sales, familiarity with CRM tools like HubSpot is a plus.' },
+
+      { id:'i41', companyId:'c12', companyName:'Surat Digital Labs', title:'Cyber Law & Policy Research Intern',
+        location:'Surat', type:'Internship', category:'Research', stipend:'₹20,000 / month', duration:'4 months',
+        skills:['Cyber Law','IT Act','Policy'], openings:1, deadline:'2026-12-06', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*16, active:true,
+        description:'Research Indian cyber law, IT Act amendments and global data protection regulations. Support client compliance and policy drafting.',
+        requirements:'Law background (LLB/LLM), strong research and writing, interest in technology policy.' },
+
+      { id:'i42', companyId:'c12', companyName:'Surat Digital Labs', title:'Security Content Writer Intern',
+        location:'Surat', type:'Part-time', category:'Content', stipend:'₹14,000 / month', duration:'3 months',
+        skills:['Cybersecurity','Writing','Blogging'], openings:2, deadline:'2026-12-10', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*17, active:true,
+        description:'Write blog posts, whitepapers and case studies on cybersecurity topics for our marketing and client-facing content.',
+        requirements:'Strong writing, basic cybersecurity understanding, ability to explain technical concepts simply.' },
+
+      /* ================= Extra cybersecurity roles at other companies ================= */
+
+      { id:'i43', companyId:'c4', companyName:'CloudSprint', title:'Cloud Security Engineer Intern',
+        location:'Pune', type:'Internship', category:'Security', stipend:'₹29,000 / month', duration:'6 months',
+        skills:['AWS','IAM','Zero Trust'], openings:2, deadline:'2026-12-14', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*4, active:true,
+        description:'Help clients harden their cloud infrastructure. Audit IAM policies, set up zero-trust access and implement cloud-native security controls.',
+        requirements:'AWS fundamentals, understanding of IAM and VPC, familiarity with security groups and KMS.' },
+
+      { id:'i44', companyId:'c2', companyName:'DataWorks AI', title:'AI Security & Privacy Intern',
+        location:'Hyderabad', type:'Internship', category:'Security', stipend:'₹33,000 / month', duration:'6 months',
+        skills:['Adversarial ML','Privacy','Python'], openings:1, deadline:'2026-12-26', featured:true, urgent:false,
+        postedAt: Date.now() - 86400000*5, active:true,
+        description:'Research adversarial attacks on ML models, build privacy-preserving ML pipelines and help clients adopt safe, compliant AI systems.',
+        requirements:'Strong Python, ML fundamentals, interest in adversarial robustness and differential privacy.' },
+
+      { id:'i45', companyId:'c1', companyName:'TechNova Solutions', title:'Product Security Intern',
+        location:'Bangalore', type:'Internship', category:'Security', stipend:'₹30,000 / month', duration:'6 months',
+        skills:['Threat Modeling','Secure Design','OWASP'], openings:2, deadline:'2026-12-18', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*6, active:true,
+        description:'Embed security into our product lifecycle — threat-model new features, review architecture and drive secure design reviews with engineering.',
+        requirements:'Understanding of OWASP Top 10, threat modeling basics, strong communication skills.' },
+
+      { id:'i46', companyId:'c5', companyName:'FinEdge Capital', title:'Financial Cybersecurity Intern',
+        location:'Mumbai', type:'Internship', category:'Security', stipend:'₹34,000 / month', duration:'6 months',
+        skills:['Fraud Detection','PCI DSS','SIEM'], openings:2, deadline:'2026-12-30', featured:true, urgent:true,
+        postedAt: Date.now() - 86400000*1, active:true,
+        description:'Protect financial systems — detect fraud patterns, ensure PCI DSS compliance and support the security operations team protecting millions in transactions.',
+        requirements:'Interest in fintech security, understanding of payment systems, basic SQL and Python.' },
+
+      { id:'i47', companyId:'c7', companyName:'MedTech Labs', title:'Healthcare Security & Compliance Intern',
+        location:'Chennai', type:'Internship', category:'Security', stipend:'₹25,000 / month', duration:'6 months',
+        skills:['HIPAA','ISO 27001','Risk'], openings:1, deadline:'2026-12-21', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*7, active:true,
+        description:'Ensure our medical devices and clinical platforms meet HIPAA and ISO 27001 standards. Support risk assessments and vendor security reviews.',
+        requirements:'Interest in healthcare security, basic understanding of compliance frameworks.' },
+
+      { id:'i48', companyId:'c8', companyName:'EduSpark Learning', title:'EdTech Security Intern',
+        location:'Delhi', type:'Internship', category:'Security', stipend:'₹22,000 / month', duration:'4 months',
+        skills:['COPPA','Data Privacy','VAPT'], openings:1, deadline:'2026-12-15', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*8, active:true,
+        description:'Protect student data — run vulnerability assessments, ensure COPPA compliance and drive security awareness across our engineering team.',
+        requirements:'Understanding of web security basics, interest in data privacy and child safety.' },
+
+      { id:'i49', companyId:'c9', companyName:'Quantum Robotics', title:'IoT & OT Security Intern',
+        location:'Kolkata', type:'Internship', category:'Security', stipend:'₹30,000 / month', duration:'6 months',
+        skills:['IoT Security','OT Networks','Embedded'], openings:1, deadline:'2026-12-12', featured:true, urgent:false,
+        postedAt: Date.now() - 86400000*9, active:true,
+        description:'Secure industrial IoT and OT networks. Analyse firmware, test robotic controllers and help implement secure boot chains.',
+        requirements:'Embedded or networking background, curiosity about hardware security, scripting in Python.' },
+
+      { id:'i50', companyId:'c3', companyName:'PixelCraft Studios', title:'Digital Rights & Content Security Intern',
+        location:'Mumbai', type:'Internship', category:'Security', stipend:'₹18,000 / month', duration:'3 months',
+        skills:['DRM','Copyright','Anti-Piracy'], openings:1, deadline:'2026-12-05', featured:false, urgent:false,
+        postedAt: Date.now() - 86400000*10, active:true,
+        description:'Protect digital content from piracy — help implement DRM, track copyright violations and coordinate anti-piracy takedowns.',
+        requirements:'Interest in digital media rights, basic understanding of DRM and copyright law.' }
+    ],
+
+    applications: [
+      { id:'a1', internshipId:'i1', studentId:'u2', studentName:'Priya Verma',
+        studentEmail:'priya@demo.com', college:'NIT Trichy',
+        coverLetter:'I love building clean, accessible UIs and would be thrilled to join TechNova as a frontend intern.',
+        status:'reviewed', appliedAt: Date.now() - 86400000*3 },
+      { id:'a2', internshipId:'i3', studentId:'u1', studentName:'Aarav Sharma',
+        studentEmail:'student@demo.com', college:'IIT Bombay',
+        coverLetter:'I have built ML models for retail demand forecasting and would love to work on real client problems.',
+        status:'shortlisted', appliedAt: Date.now() - 86400000*5 },
+      { id:'a3', internshipId:'i7', studentId:'u3', studentName:'Rohan Mehta',
+        studentEmail:'rohan@demo.com', college:'BITS Pilani',
+        coverLetter:'I run a homelab Kubernetes cluster and have deployed production apps on AWS.',
+        status:'pending', appliedAt: Date.now() - 86400000*1 },
+      { id:'a4', internshipId:'i25', studentId:'u5', studentName:'Karan Patel',
+        studentEmail:'karan@demo.com', college:'SVNIT Surat',
+        coverLetter:'I am from Surat and have been running a home SOC lab with Splunk. Excited to work on real incidents.',
+        status:'pending', appliedAt: Date.now() - 86400000*1 },
+      { id:'a5', internshipId:'i39', studentId:'u5', studentName:'Karan Patel',
+        studentEmail:'karan@demo.com', college:'SVNIT Surat',
+        coverLetter:'I want to work in Surat and build my career in cybersecurity SOC operations.',
+        status:'reviewed', appliedAt: Date.now() - 3600000*5 }
+    ],
+
+    session: null,
+    counters: { i: 51, a: 6, u: 6, c: 13 }
+  });
+
+  let data;
+  try {
+    const raw = localStorage.getItem(KEY);
+    data = raw ? JSON.parse(raw) : seed();
+    if (!data || !data.users || !data.internships) data = seed();
+  } catch { data = seed(); }
+
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e){} };
+  const uid = (prefix, key) => `${prefix}${data.counters[key]++}`;
+  const delay = (ms = 90) => new Promise(r => setTimeout(r, ms));
+
+  /* ============================ API ============================ */
+  return {
+    /* ---------- AUTH ---------- */
+    async register({ role, name, email, password, ...extra }) {
+      await delay();
+      email = String(email).trim().toLowerCase();
+      if (data.users.some(u => u.email === email))
+        throw new Error('An account with this email already exists.');
+      const user = {
+        id: uid(role === 'student' ? 'u' : 'c', role === 'student' ? 'u' : 'c'),
+        role, name: String(name).trim(), email, password, ...extra
+      };
+      data.users.push(user);
+      data.session = { id: user.id, role: user.role };
+      save();
+      return this.publicUser(user);
+    },
+
+    async login({ email, password }) {
+      await delay();
+      email = String(email).trim().toLowerCase();
+      const user = data.users.find(u => u.email === email);
+      if (!user || user.password !== password) throw new Error('Invalid email or password.');
+      data.session = { id: user.id, role: user.role };
+      save();
+      return this.publicUser(user);
+    },
+
+    logout() { data.session = null; save(); },
+
+    currentUser() {
+      if (!data.session) return null;
+      const u = data.users.find(x => x.id === data.session.id);
+      return u ? this.publicUser(u) : null;
+    },
+
+    privateUser(id) { return data.users.find(u => u.id === id) || null; },
+
+    publicUser(u) { const { password, ...rest } = u; return { ...rest }; },
+
+    /* ---------- INTERNSHIPS ---------- */
+    async listInternships({ q = '', type = '', location = '', category = '' } = {}) {
+      await delay(70);
+      const ql = q.trim().toLowerCase();
+      return data.internships
+        .filter(i => i.active)
+        .filter(i => !type || i.type === type)
+        .filter(i => !category || i.category === category)
+        .filter(i => !location || i.location.toLowerCase().includes(location.toLowerCase()))
+        .filter(i =>
+          !ql ||
+          i.title.toLowerCase().includes(ql) ||
+          i.companyName.toLowerCase().includes(ql) ||
+          i.location.toLowerCase().includes(ql) ||
+          i.category.toLowerCase().includes(ql) ||
+          i.skills.join(' ').toLowerCase().includes(ql) ||
+          i.description.toLowerCase().includes(ql)
+        )
+        .sort((a, b) => (b.featured - a.featured) || (b.postedAt - a.postedAt));
+    },
+
+    getInternship(id) { return data.internships.find(i => i.id === id) || null; },
+
+    listInternshipsByCompany(companyId) {
+      return data.internships
+        .filter(i => i.companyId === companyId)
+        .sort((a, b) => b.postedAt - a.postedAt);
+    },
+
+    async createInternship(companyId, payload) {
+      await delay();
+      const company = this.privateUser(companyId);
+      if (!company || company.role !== 'company') throw new Error('Only companies can post internships.');
+      const intern = {
+        id: uid('i', 'i'),
+        companyId,
+        companyName: company.name,
+        title: payload.title.trim(),
+        location: payload.location.trim(),
+        type: payload.type,
+        category: payload.category,
+        stipend: payload.stipend.trim(),
+        duration: payload.duration.trim(),
+        skills: payload.skills.split(',').map(s => s.trim()).filter(Boolean),
+        description: payload.description.trim(),
+        requirements: payload.requirements.trim(),
+        openings: Number(payload.openings) || 1,
+        deadline: payload.deadline,
+        featured: false,
+        urgent: false,
+        postedAt: Date.now(),
+        active: true
+      };
+      data.internships.push(intern);
+      save();
+      return intern;
+    },
+
+    async toggleInternship(id, companyId) {
+      await delay(60);
+      const i = data.internships.find(x => x.id === id && x.companyId === companyId);
+      if (!i) throw new Error('Internship not found.');
+      i.active = !i.active;
+      save();
+      return i;
+    },
+
+    async deleteInternship(id, companyId) {
+      await delay(60);
+      const idx = data.internships.findIndex(x => x.id === id && x.companyId === companyId);
+      if (idx === -1) throw new Error('Internship not found.');
+      data.internships.splice(idx, 1);
+      data.applications = data.applications.filter(a => a.internshipId !== id);
+      save();
+    },
+
+    /* ---------- APPLICATIONS ---------- */
+    async apply(internshipId, studentId, coverLetter) {
+      await delay();
+      const student = this.privateUser(studentId);
+      const intern = this.getInternship(internshipId);
+      if (!student || student.role !== 'student') throw new Error('Only students can apply.');
+      if (!intern) throw new Error('Internship not found.');
+      if (data.applications.some(a => a.internshipId === internshipId && a.studentId === studentId))
+        throw new Error('You have already applied to this internship.');
+      const app = {
+        id: uid('a', 'a'),
+        internshipId, studentId,
+        studentName: student.name,
+        studentEmail: student.email,
+        college: student.college || '',
+        coverLetter: String(coverLetter || '').trim(),
+        status: 'pending',
+        appliedAt: Date.now()
+      };
+      data.applications.push(app);
+      save();
+      return app;
+    },
+
+    listApplicationsByStudent(studentId) {
+      return data.applications
+        .filter(a => a.studentId === studentId)
+        .map(a => ({ ...a, internship: this.getInternship(a.internshipId) }))
+        .sort((a, b) => b.appliedAt - a.appliedAt);
+    },
+
+    listApplicationsForCompany(companyId) {
+      const ids = data.internships.filter(i => i.companyId === companyId).map(i => i.id);
+      return data.applications
+        .filter(a => ids.includes(a.internshipId))
+        .map(a => ({ ...a, internship: this.getInternship(a.internshipId) }))
+        .sort((a, b) => b.appliedAt - a.appliedAt);
+    },
+
+    async updateApplicationStatus(appId, companyId, status) {
+      await delay(60);
+      const app = data.applications.find(a => a.id === appId);
+      if (!app) throw new Error('Application not found.');
+      const intern = this.getInternship(app.internshipId);
+      if (!intern || intern.companyId !== companyId) throw new Error('Not authorized.');
+      app.status = status;
+      save();
+      return app;
+    },
+
+    /* ---------- HELPERS ---------- */
+    stats() {
+      const cities = new Set(data.internships.filter(i => i.active).map(i => i.location));
+      return {
+        internships: data.internships.filter(i => i.active).length,
+        companies: data.users.filter(u => u.role === 'company').length,
+        students: data.users.filter(u => u.role === 'student').length,
+        applications: data.applications.length,
+        cities: cities.size
+      };
+    },
+
+    cities() {
+      return [...new Set(data.internships.filter(i => i.active).map(i => i.location))].sort();
+    },
+
+    reset() { data = seed(); save(); }
+  };
+})();
+
+/* =====================================================================
+   UTILITIES
+   ===================================================================== */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+const esc = (s = '') => String(s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+
+const fmtDate = ts => new Date(ts).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+
+function timeAgo(ts) {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return 'just now';
+  const m = Math.floor(s / 60); if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60); if (h < 24) return `${h}h ago`;
+  const d = Math.floor(h / 24); if (d < 30) return `${d}d ago`;
+  return fmtDate(ts);
+}
+
+function daysLeft(deadline) {
+  const d = new Date(deadline + 'T23:59:59').getTime() - Date.now();
+  return Math.ceil(d / 86400000);
+}
+
+const AVATAR_GRADIENTS = [
+  'linear-gradient(135deg,#6366f1,#8b5cf6)',
+  'linear-gradient(135deg,#06b6d4,#3b82f6)',
+  'linear-gradient(135deg,#f59e0b,#ef4444)',
+  'linear-gradient(135deg,#10b981,#06b6d4)',
+  'linear-gradient(135deg,#ec4899,#8b5cf6)',
+  'linear-gradient(135deg,#f43f5e,#f59e0b)',
+  'linear-gradient(135deg,#14b8a6,#22c55e)',
+  'linear-gradient(135deg,#8b5cf6,#ec4899)',
+  'linear-gradient(135deg,#0ea5e9,#6366f1)',
+  'linear-gradient(135deg,#f97316,#facc15)',
+  'linear-gradient(135deg,#0f766e,#059669)',
+  'linear-gradient(135deg,#1e293b,#475569)'
+];
+
+function avatarGrad(name = '') {
+  let h = 0;
+  for (const ch of String(name)) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return AVATAR_GRADIENTS[h % AVATAR_GRADIENTS.length];
+}
+
+function initials(name = '') {
+  return String(name).trim().split(/\s+/).slice(0, 2)
+    .map(w => w[0] || '').join('').toUpperCase() || '?';
+}
+
+let toastTimer;
+function toast(msg, type = '') {
+  const el = $('#toast');
+  el.textContent = msg;
+  el.className = 'toast show ' + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.className = 'toast ' + type; }, 2800);
+}
+window.showToast = toast;
+
+/* =====================================================================
+   APP / ROUTER
+   ===================================================================== */
+const App = (() => {
+  let route = { path: '/', params: {} };
+  const state = { category: '', q: '', type: '', location: '' };
+
+  function go(hash) {
+    if (location.hash === hash) render();
+    else location.hash = hash;
+  }
+  function navigate(path) { go('#' + path); }
+
+  function parseHash() {
+    const raw = location.hash.replace(/^#/, '') || '/';
+    const [path, query] = raw.split('?');
+    const params = {};
+    new URLSearchParams(query || '').forEach((v, k) => params[k] = v);
+    const parts = path.split('/').filter(Boolean);
+    if (parts[0] === 'internship' && parts[1]) return { path: '/internship', params: { ...params, id: parts[1] } };
+    return { path: '/' + (parts[0] || ''), params };
+  }
+
+  /* ------------------------- NAV ------------------------- */
+  function renderNav() {
+    const user = DB.currentUser();
+    const nav = $('#nav');
+    const active = route.path;
+
+    if (!user) {
+      nav.innerHTML = `
+        <a href="#/" class="${active === '/' ? 'active' : ''}">Browse</a>
+        <a href="#/login" class="${active === '/login' ? 'active' : ''}">Login</a>
+        <a href="#/register" class="${active === '/register' ? 'active' : ''}">Register</a>`;
+      return;
+    }
+
+    const links = user.role === 'student'
+      ? `<a href="#/" class="${active === '/' ? 'active' : ''}">Browse</a>
+         <a href="#/my-applications" class="${active === '/my-applications' ? 'active' : ''}">My Applications</a>`
+      : `<a href="#/" class="${active === '/' ? 'active' : ''}">Browse</a>
+         <a href="#/dashboard" class="${active === '/dashboard' ? 'active' : ''}">Dashboard</a>
+         <a href="#/post" class="${active === '/post' ? 'active' : ''}">Post Internship</a>`;
+
+    nav.innerHTML = `
+      ${links}
+      <span class="user-chip"><span class="avatar">${esc(initials(user.name))}</span>${esc(user.name.split(' ')[0])}</span>
+      <button class="navlink" id="logoutBtn">Logout</button>`;
+
+    $('#logoutBtn').onclick = () => {
+      DB.logout();
+      toast('Logged out successfully.');
+      navigate('/');
+      render();
+    };
+  }
+
+  /* ------------------------- RENDER ------------------------- */
+  function render() {
+    route = parseHash();
+    renderNav();
+    const app = $('#app');
+
+    switch (route.path) {
+      case '/':                 app.innerHTML = viewBrowse();      bindBrowse();      break;
+      case '/internship':       app.innerHTML = viewDetail();      bindDetail();      break;
+      case '/login':            app.innerHTML = viewLogin();       bindLogin();       break;
+      case '/register':         app.innerHTML = viewRegister();    bindRegister();    break;
+      case '/my-applications':  app.innerHTML = viewMyApps();                         break;
+      case '/dashboard':        app.innerHTML = viewDashboard();   bindDashboard();   break;
+      case '/post':             app.innerHTML = viewPost();        bindPost();        break;
+      default:                  app.innerHTML = viewNotFound();
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  /* ======================= BROWSE ======================= */
+  const CATEGORIES = ['All','Engineering','Design','Data','Marketing','Finance','Content','Operations','Research','Security'];
+
+  function viewBrowse() {
+    const user = DB.currentUser();
+    const s = DB.stats();
+
+    return `
+      <section class="hero">
+        <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+        <div class="container hero-inner">
+          <span class="hero-badge">✨ ${s.internships} live internships · ${s.cities} cities · ${s.companies} companies</span>
+          <h1>Launch your career with the <span class="hl">perfect internship</span></h1>
+          <p class="lede">Discover hand-picked opportunities from startups to Fortune 500s — across India and remote. Apply in one click.</p>
+
+          <form id="filterForm" class="hero-search">
+            <div class="field wide">
+              <span class="ico">🔍</span>
+              <input type="text" id="fQ" placeholder="Search role, company, skill or city..." value="${esc(state.q)}" />
+            </div>
+            <div class="field">
+              <select id="fType">
+                <option value="">All types</option>
+                ${['Internship','Part-time','Full-time'].map(t =>
+                  `<option ${state.type === t ? 'selected' : ''}>${t}</option>`).join('')}
+              </select>
+            </div>
+            <div class="field">
+              <select id="fLoc">
+                <option value="">All locations</option>
+                ${DB.cities().map(c =>
+                  `<option ${state.location === c ? 'selected' : ''}>${esc(c)}</option>`).join('')}
+              </select>
+            </div>
+            <button class="btn" type="submit">Search</button>
+          </form>
+
+          <div class="chips" id="chips">
+            ${CATEGORIES.map(c => `
+              <button type="button" class="chip ${state.category === (c === 'All' ? '' : c) ? 'on' : ''}"
+                data-cat="${c === 'All' ? '' : c}">${c === 'Security' ? '🔐 ' + c : c}</button>`).join('')}
+          </div>
+        </div>
+      </section>
+
+      <div class="container">
+        <div class="stats-row">
+          <div class="stat"><div class="ic i1">💼</div><div><div class="num">${s.internships}</div><div class="lbl">Open Roles</div></div></div>
+          <div class="stat"><div class="ic i2">🏢</div><div><div class="num">${s.companies}</div><div class="lbl">Companies</div></div></div>
+          <div class="stat"><div class="ic i3">📍</div><div><div class="num">${s.cities}</div><div class="lbl">Cities</div></div></div>
+          <div class="stat"><div class="ic i4">📨</div><div><div class="num">${s.applications}</div><div class="lbl">Applications</div></div></div>
+        </div>
+
+        ${!user ? `<div class="alert alert-info mt-3">
+          👋 <strong>New here?</strong> <a href="#/register">Create a free account</a> to apply instantly, or use the demo logins on the
+          <a href="#/login">login page</a>.
+        </div>` : ''}
+
+        <div class="section-head">
+          <div>
+            <h2 id="listHeading">Latest Opportunities</h2>
+            <p id="listSub">Fresh internships added every day</p>
+          </div>
+        </div>
+
+        <div id="listings" class="grid grid-3"></div>
+      </div>
+    `;
+  }
+
+  function internshipCard(i) {
+    const dl = daysLeft(i.deadline);
+    const urgent = i.urgent || (dl >= 0 && dl <= 7);
+    const isSecurity = i.category === 'Security';
+    return `
+      <article class="intern-card">
+        <div class="card-top">
+          <div class="co-logo" style="background:${avatarGrad(i.companyName)}">${esc(initials(i.companyName))}</div>
+          <div style="flex:1;min-width:0">
+            <h3>${esc(i.title)}</h3>
+            <div class="company-name">${esc(i.companyName)}</div>
+          </div>
+        </div>
+
+        <div class="tags">
+          ${i.featured ? `<span class="badge badge-featured">★ Featured</span>` : ''}
+          ${urgent ? `<span class="badge badge-urgent">⚡ Closing soon</span>` : ''}
+          ${isSecurity ? `<span class="badge badge-security">🔐 Security</span>` : `<span class="badge badge-tag">${esc(i.category)}</span>`}
+          <span class="badge badge-type">${esc(i.type)}</span>
+        </div>
+
+        <div class="meta">
+          <span>📍 ${esc(i.location)}</span>
+          <span>⏱ ${esc(i.duration)}</span>
+          <span>👥 ${i.openings} opening${i.openings > 1 ? 's' : ''}</span>
+        </div>
+
+        <div class="tags">
+          ${i.skills.slice(0, 4).map(s => `<span class="badge badge-tag">${esc(s)}</span>`).join('')}
+          ${i.skills.length > 4 ? `<span class="badge badge-tag">+${i.skills.length - 4}</span>` : ''}
+        </div>
+
+        <div class="card-foot">
+          <div>
+            <div class="stipend">${esc(i.stipend)}</div>
+            <div class="posted">Posted ${timeAgo(i.postedAt)} · Apply by ${esc(i.deadline)}</div>
+          </div>
+          <a class="btn btn-sm" href="#/internship/${i.id}">Apply →</a>
+        </div>
+      </article>`;
+  }
+
+  async function loadListings() {
+    const box = $('#listings');
+    const list = await DB.listInternships({
+      q: state.q, type: state.type, location: state.location, category: state.category
+    });
+
+    const heading = $('#listHeading');
+    const sub = $('#listSub');
+    if (heading) {
+      heading.textContent = state.category
+        ? (state.category === 'Security' ? '🔐 Cybersecurity Internships' : `${state.category} Internships`)
+        : 'Latest Opportunities';
+      sub.textContent = `${list.length} role${list.length !== 1 ? 's' : ''} found${state.location ? ' in ' + state.location : ''}`;
+    }
+
+    if (!list.length) {
+      box.innerHTML = `<div class="empty" style="grid-column:1/-1">
+        <div class="big">🔍</div>
+        <h3>No internships found</h3>
+        <p>Try changing your search or clearing the filters.</p>
+        <button class="btn btn-outline mt-2" id="clearFilters">Clear all filters</button>
+      </div>`;
+      $('#clearFilters').onclick = () => {
+        state.q = ''; state.type = ''; state.location = ''; state.category = '';
+        $('#fQ').value = ''; $('#fType').value = ''; $('#fLoc').value = '';
+        $$('#chips .chip').forEach(c => c.classList.toggle('on', c.dataset.cat === ''));
+        loadListings();
+      };
+      return;
+    }
+
+    box.innerHTML = list.map(internshipCard).join('');
+  }
+
+  function bindBrowse() {
+    if (!$('#filterForm')) return;
+
+    const apply = () => {
+      state.q = $('#fQ').value;
+      state.type = $('#fType').value;
+      state.location = $('#fLoc').value;
+      loadListings();
+    };
+
+    $('#filterForm').addEventListener('submit', e => { e.preventDefault(); apply(); });
+    $('#fType').addEventListener('change', apply);
+    $('#fLoc').addEventListener('change', apply);
+
+    let t;
+    $('#fQ').addEventListener('input', () => {
+      clearTimeout(t);
+      t = setTimeout(apply, 220);
+    });
+
+    $$('#chips .chip').forEach(chip => {
+      chip.onclick = () => {
+        $$('#chips .chip').forEach(c => c.classList.remove('on'));
+        chip.classList.add('on');
+        state.category = chip.dataset.cat;
+        loadListings();
+      };
+    });
+
+    loadListings();
+  }
+
+  /* ======================= DETAIL ======================= */
+  function viewDetail() {
+    const i = DB.getInternship(route.params.id);
+    if (!i) return viewNotFound('Internship not found.');
+
+    const user = DB.currentUser();
+    const isStudent = user && user.role === 'student';
+    const alreadyApplied = isStudent &&
+      DB.listApplicationsByStudent(user.id).some(a => a.internshipId === i.id);
+    const company = DB.privateUser(i.companyId) || {};
+    const dl = daysLeft(i.deadline);
+    const isSecurity = i.category === 'Security';
+
+    return `
+      <div class="container" style="padding-top:26px">
+        <a href="#/" class="small" style="font-weight:700">← Back to all internships</a>
+
+        <div class="detail-grid mt-2">
+          <div class="stack">
+            <div class="detail-hero">
+              <div class="flex-between">
+                <div style="display:flex;gap:14px;align-items:center;min-width:0">
+                  <div class="co-logo" style="width:52px;height:52px;font-size:1rem;background:rgba(255,255,255,.22);box-shadow:none;backdrop-filter:blur(6px)">
+                    ${esc(initials(i.companyName))}
+                  </div>
+                  <div style="min-width:0">
+                    <div class="co">${esc(i.companyName)}</div>
+                    <h1>${isSecurity ? '🔐 ' : ''}${esc(i.title)}</h1>
+                  </div>
+                </div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
+                  ${i.featured ? `<span class="badge badge-featured">★ Featured</span>` : ''}
+                  ${dl >= 0 && dl <= 7 ? `<span class="badge badge-urgent">⚡ ${dl} day${dl !== 1 ? 's' : ''} left</span>` : ''}
+                </div>
+              </div>
+
+              <div class="meta mt-2">
+                <span>📍 ${esc(i.location)}</span>
+                <span>💰 ${esc(i.stipend)}</span>
+                <span>⏱ ${esc(i.duration)}</span>
+                <span>👥 ${i.openings} opening${i.openings > 1 ? 's' : ''}</span>
+                <span>📅 Apply by ${esc(i.deadline)}</span>
+                <span>🏷 ${esc(i.category)}</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="section-title">📋 About the role</div>
+              <p class="mb-3">${esc(i.description)}</p>
+
+              <div class="section-title">✅ Requirements</div>
+              <p class="mb-3">${esc(i.requirements)}</p>
+
+              <div class="section-title">🛠 Skills</div>
+              <div class="tags">${i.skills.map(s => `<span class="badge badge-tag">${esc(s)}</span>`).join('')}</div>
+            </div>
+          </div>
+
+          <div class="stack">
+            <div class="card">
+              <div class="section-title">🚀 Apply now</div>
+              ${!user ? `
+                <p class="small muted mb-2">You need to be logged in as a student to apply for this role.</p>
+                <a class="btn btn-block" href="#/login">Login to apply</a>
+                <p class="form-foot">No account yet? <a href="#/register">Register free</a></p>
+              ` : !isStudent ? `
+                <p class="small muted">You're logged in as a company account. Only students can apply to internships.</p>
+              ` : alreadyApplied ? `
+                <div class="alert alert-info" style="margin:0">✅ You've already applied for this role.</div>
+                <a class="btn btn-outline btn-block mt-2" href="#/my-applications">View my applications</a>
+              ` : `
+                <form id="applyForm">
+                  <div class="form-group">
+                    <label for="coverLetter">Cover letter</label>
+                    <textarea id="coverLetter" placeholder="Tell us why you're a great fit for this role..." required></textarea>
+                  </div>
+                  <button class="btn btn-block" type="submit">Submit Application</button>
+                </form>
+              `}
+            </div>
+
+            <div class="card">
+              <div style="display:flex;gap:13px;align-items:center;margin-bottom:12px">
+                <div class="co-logo" style="background:${avatarGrad(i.companyName)}">${esc(initials(i.companyName))}</div>
+                <div>
+                  <div style="font-weight:800;font-size:.95rem">${esc(i.companyName)}</div>
+                  <div class="small muted">${esc(company.industry || 'Company')}</div>
+                </div>
+              </div>
+              <p class="small muted">${esc(company.about || 'No description provided.')}</p>
+              ${company.website ? `<div class="divider"></div>
+                <a class="small" href="${esc(company.website)}" target="_blank" rel="noopener" style="font-weight:700">🌐 Visit website ↗</a>` : ''}
+            </div>
+
+            <div class="card">
+              <div class="section-title">📌 Quick facts</div>
+              <div class="stack" style="gap:10px">
+                <div class="flex-between small"><span class="muted">Stipend</span><b>${esc(i.stipend)}</b></div>
+                <div class="flex-between small"><span class="muted">Duration</span><b>${esc(i.duration)}</b></div>
+                <div class="flex-between small"><span class="muted">Type</span><b>${esc(i.type)}</b></div>
+                <div class="flex-between small"><span class="muted">Openings</span><b>${i.openings}</b></div>
+                <div class="flex-between small"><span class="muted">Posted</span><b>${timeAgo(i.postedAt)}</b></div>
+                <div class="flex-between small"><span class="muted">Deadline</span><b>${esc(i.deadline)}</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function bindDetail() {
+    const form = $('#applyForm');
+    if (!form) return;
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const user = DB.currentUser();
+      if (!user || user.role !== 'student') return;
+      const btn = form.querySelector('button');
+      btn.disabled = true; btn.textContent = 'Submitting...';
+      try {
+        await DB.apply(route.params.id, user.id, $('#coverLetter').value);
+        toast('Application submitted successfully! 🎉', 'success');
+        render();
+      } catch (err) {
+        toast(err.message, 'error');
+        btn.disabled = false; btn.textContent = 'Submit Application';
+      }
+    });
+  }
+
+  /* ======================= LOGIN ======================= */
+  function viewLogin() {
+    if (DB.currentUser()) { setTimeout(() => navigate('/'), 0); return ''; }
+    return `
+      <div class="container">
+        <div class="card form-card">
+          <h2 class="form-title">Welcome back 👋</h2>
+          <p class="form-sub">Log in to continue your internship journey</p>
+
+          <div class="alert alert-info">
+            <strong>Demo accounts</strong><br>
+            🎓 Student — <b>student@demo.com</b> / demo123<br>
+            🏢 Company — <b>company@demo.com</b> / demo123<br>
+            🔐 Security Company — <b>secureshield@demo.com</b> / demo123
+          </div>
+
+          <div id="loginError"></div>
+
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="email">Email address</label>
+              <input type="email" id="email" required placeholder="you@example.com" autocomplete="email" />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" required placeholder="••••••••" autocomplete="current-password" />
+            </div>
+            <button class="btn btn-block" type="submit">Log In</button>
+          </form>
+
+          <p class="form-foot">Don't have an account? <a href="#/register" style="font-weight:800">Create one free →</a></p>
+        </div>
+      </div>
+    `;
+  }
+
+  function bindLogin() {
+    const form = $('#loginForm');
+    if (!form) return;
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = form.querySelector('button');
+      btn.disabled = true; btn.textContent = 'Logging in...';
+      $('#loginError').innerHTML = '';
+      try {
+        await DB.login({ email: $('#email').value, password: $('#password').value });
+        toast('Logged in successfully! Welcome back 🎉', 'success');
+        navigate('/');
+        render();
+      } catch (err) {
+        $('#loginError').innerHTML = `<div class="alert alert-error">${esc(err.message)}</div>`;
+        btn.disabled = false; btn.textContent = 'Log In';
+      }
+    });
+  }
+
+  /* ======================= REGISTER ======================= */
+  function viewRegister() {
+    if (DB.currentUser()) { setTimeout(() => navigate('/'), 0); return ''; }
+    return `
+      <div class="container">
+        <div class="card form-card">
+          <h2 class="form-title">Create your account</h2>
+          <p class="form-sub">Join InternHub as a student or a company</p>
+
+          <div id="regError"></div>
+
+          <form id="registerForm">
+            <div class="form-group">
+              <label for="role">I am a…</label>
+              <select id="role">
+                <option value="student">🎓 Student — looking for internships</option>
+                <option value="company">🏢 Company — hiring interns</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="name">Full name / Company name</label>
+              <input type="text" id="name" required placeholder="Jane Doe" />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email address</label>
+              <input type="email" id="email" required placeholder="you@example.com" autocomplete="email" />
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" required minlength="6" placeholder="At least 6 characters" autocomplete="new-password" />
+            </div>
+
+            <div id="studentExtra">
+              <div class="form-group">
+                <label for="college">College / University</label>
+                <input type="text" id="college" placeholder="IIT Delhi" />
+              </div>
+              <div class="form-group">
+                <label for="skills">Key skills (comma separated)</label>
+                <input type="text" id="skills" placeholder="React, Node.js, SQL" />
+              </div>
+            </div>
+
+            <div id="companyExtra" style="display:none">
+              <div class="form-group">
+                <label for="industry">Industry</label>
+                <input type="text" id="industry" placeholder="e.g. SaaS, Fintech, Cybersecurity" />
+              </div>
+              <div class="form-group">
+                <label for="website">Company website</label>
+                <input type="text" id="website" placeholder="https://yourcompany.com" />
+              </div>
+              <div class="form-group">
+                <label for="about">About the company</label>
+                <textarea id="about" placeholder="A short description of what your company does"></textarea>
+              </div>
+            </div>
+
+            <button class="btn btn-block" type="submit">Create Account</button>
+          </form>
+
+          <p class="form-foot">Already have an account? <a href="#/login" style="font-weight:800">Log in →</a></p>
+        </div>
+      </div>
+    `;
+  }
+
+  function bindRegister() {
+    const form = $('#registerForm');
+    if (!form) return;
+
+    const roleSel = $('#role');
+    const toggle = () => {
+      const isStudent = roleSel.value === 'student';
+      $('#studentExtra').style.display = isStudent ? 'block' : 'none';
+      $('#companyExtra').style.display = isStudent ? 'none' : 'block';
+    };
+    roleSel.addEventListener('change', toggle);
+    toggle();
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type=submit]');
+      btn.disabled = true; btn.textContent = 'Creating account...';
+      $('#regError').innerHTML = '';
+      try {
+        const role = roleSel.value;
+        const payload = {
+          role,
+          name: $('#name').value,
+          email: $('#email').value,
+          password: $('#password').value
+        };
+        if (role === 'student') {
+          payload.college = $('#college').value;
+          payload.skills = $('#skills').value;
+          payload.resume = '';
+        } else {
+          payload.industry = $('#industry').value;
+          payload.website = $('#website').value;
+          payload.about = $('#about').value;
+        }
+        await DB.register(payload);
+        toast('Account created — welcome to InternHub! 🎉', 'success');
+        navigate('/');
+        render();
+      } catch (err) {
+        $('#regError').innerHTML = `<div class="alert alert-error">${esc(err.message)}</div>`;
+        btn.disabled = false; btn.textContent = 'Create Account';
+      }
+    });
+  }
+
+  /* =================== MY APPLICATIONS =================== */
+  function viewMyApps() {
+    const user = DB.currentUser();
+    if (!user) { setTimeout(() => navigate('/login'), 0); return ''; }
+    if (user.role !== 'student') {
+      return `<div class="container"><div class="empty">
+        <div class="big">🚫</div><h3>Students only</h3>
+        <p>This page is available to student accounts.</p>
+        <a class="btn mt-2" href="#/dashboard">Go to Dashboard</a></div></div>`;
+    }
+
+    const apps = DB.listApplicationsByStudent(user.id);
+    const counts = apps.reduce((acc, a) => (acc[a.status] = (acc[a.status] || 0) + 1, acc), {});
+
+    return `
+      <div class="container" style="padding-top:30px">
+        <div class="section-head" style="margin-top:0">
+          <div>
+            <h2>My Applications</h2>
+            <p>${apps.length} application${apps.length !== 1 ? 's' : ''} submitted</p>
+          </div>
+          <a class="btn" href="#/">＋ Find more internships</a>
+        </div>
+
+        ${apps.length ? `
+          <div class="grid grid-4 mb-3">
+            <div class="stat"><div class="ic i1">📨</div><div><div class="num">${apps.length}</div><div class="lbl">Total</div></div></div>
+            <div class="stat"><div class="ic i4">⏳</div><div><div class="num">${counts.pending || 0}</div><div class="lbl">Pending</div></div></div>
+            <div class="stat"><div class="ic i3">⭐</div><div><div class="num">${counts.shortlisted || 0}</div><div class="lbl">Shortlisted</div></div></div>
+            <div class="stat"><div class="ic i2">✅</div><div><div class="num">${counts.accepted || 0}</div><div class="lbl">Accepted</div></div></div>
+          </div>
+        ` : ''}
+
+        ${!apps.length ? `
+          <div class="empty"><div class="big">📭</div>
+            <h3>No applications yet</h3>
+            <p>Start browsing internships and apply to get going.</p>
+            <a class="btn mt-2" href="#/">Browse Internships</a>
+          </div>
+        ` : `
+          <div class="card" style="padding:0;overflow:hidden">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Role</th><th>Company</th><th>Location</th><th>Applied</th><th>Status</th><th></th></tr>
+                </thead>
+                <tbody>
+                  ${apps.map(a => `
+                    <tr>
+                      <td><strong>${esc(a.internship ? a.internship.title : 'Deleted role')}</strong></td>
+                      <td>${esc(a.internship ? a.internship.companyName : '—')}</td>
+                      <td>${esc(a.internship ? a.internship.location : '—')}</td>
+                      <td>${timeAgo(a.appliedAt)}</td>
+                      <td><span class="badge badge-${a.status}">${esc(a.status)}</span></td>
+                      <td>${a.internship ? `<a class="btn btn-sm btn-ghost" href="#/internship/${a.internshipId}">View</a>` : ''}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `}
+      </div>
+    `;
+  }
+
+  /* ===================== DASHBOARD ===================== */
+  function viewDashboard() {
+    const user = DB.currentUser();
+    if (!user) { setTimeout(() => navigate('/login'), 0); return ''; }
+    if (user.role !== 'company') {
+      return `<div class="container"><div class="empty">
+        <div class="big">🚫</div><h3>Companies only</h3>
+        <p>This dashboard is available to company accounts.</p>
+        <a class="btn mt-2" href="#/my-applications">Go to My Applications</a></div></div>`;
+    }
+
+    const mine = DB.listInternshipsByCompany(user.id);
+    const apps = DB.listApplicationsForCompany(user.id);
+    const pending = apps.filter(a => a.status === 'pending').length;
+    const shortlisted = apps.filter(a => a.status === 'shortlisted').length;
+    const accepted = apps.filter(a => a.status === 'accepted').length;
+
+    return `
+      <div class="container" style="padding-top:30px">
+        <div class="section-head" style="margin-top:0">
+          <div>
+            <h2>Company Dashboard</h2>
+            <p>Manage your internships and review applicants</p>
+          </div>
+          <a class="btn" href="#/post">＋ Post Internship</a>
+        </div>
+
+        <div class="grid grid-4 mb-3">
+          <div class="stat"><div class="ic i1">💼</div><div><div class="num">${mine.length}</div><div class="lbl">Listings</div></div></div>
+          <div class="stat"><div class="ic i2">📨</div><div><div class="num">${apps.length}</div><div class="lbl">Applications</div></div></div>
+          <div class="stat"><div class="ic i4">⏳</div><div><div class="num">${pending}</div><div class="lbl">Pending</div></div></div>
+          <div class="stat"><div class="ic i3">⭐</div><div><div class="num">${shortlisted + accepted}</div><div class="lbl">Shortlisted</div></div></div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="section-title">Your Internships</div>
+          ${!mine.length ? `<p class="muted small">You haven't posted any internships yet.
+            <a href="#/post" style="font-weight:700">Post your first one →</a></p>` : `
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Title</th><th>Location</th><th>Applicants</th><th>Status</th><th></th></tr></thead>
+                <tbody>
+                  ${mine.map(i => {
+                    const count = apps.filter(a => a.internshipId === i.id).length;
+                    return `<tr>
+                      <td><strong>${esc(i.title)}</strong><br><span class="small muted">${esc(i.category)} · ${esc(i.type)}</span></td>
+                      <td>${esc(i.location)}</td>
+                      <td><b>${count}</b></td>
+                      <td>${i.active
+                        ? '<span class="badge badge-accepted">Active</span>'
+                        : '<span class="badge badge-rejected">Closed</span>'}</td>
+                      <td style="white-space:nowrap">
+                        <a class="btn btn-sm btn-ghost" href="#/internship/${i.id}">View</a>
+                        <button class="btn btn-sm btn-outline" data-toggle="${i.id}">${i.active ? 'Close' : 'Reopen'}</button>
+                        <button class="btn btn-sm btn-danger" data-delete="${i.id}">Delete</button>
+                      </td>
+                    </tr>`;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+          `}
+        </div>
+
+        <div class="card">
+          <div class="section-title">Recent Applications</div>
+          ${!apps.length ? `<p class="muted small">No applications received yet. Share your listings to attract candidates!</p>` : `
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Applicant</th><th>Role</th><th>College</th><th>Applied</th><th>Status</th></tr></thead>
+                <tbody>
+                  ${apps.map(a => `
+                    <tr>
+                      <td>
+                        <strong>${esc(a.studentName)}</strong><br>
+                        <span class="small muted">${esc(a.studentEmail)}</span>
+                      </td>
+                      <td>${esc(a.internship ? a.internship.title : '—')}</td>
+                      <td>${esc(a.college || '—')}</td>
+                      <td>${timeAgo(a.appliedAt)}</td>
+                      <td>
+                        <select data-app="${a.id}" class="statusSelect">
+                          ${['pending','reviewed','shortlisted','accepted','rejected']
+                            .map(s => `<option value="${s}" ${a.status === s ? 'selected' : ''}>${s}</option>`).join('')}
+                        </select>
+                      </td>
+                    </tr>
+                    ${a.coverLetter ? `<tr><td colspan="5" class="small muted" style="padding-top:0;padding-bottom:14px">
+                      <em>“${esc(a.coverLetter)}”</em></td></tr>` : ''}
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          `}
+        </div>
+      </div>
+    `;
+  }
+
+  function bindDashboard() {
+    const user = DB.currentUser();
+    if (!user || user.role !== 'company') return;
+
+    $$('[data-toggle]').forEach(btn => {
+      btn.onclick = async () => {
+        try {
+          await DB.toggleInternship(btn.dataset.toggle, user.id);
+          toast('Listing updated.', 'success');
+          render();
+        } catch (e) { toast(e.message, 'error'); }
+      };
+    });
+
+    $$('[data-delete]').forEach(btn => {
+      btn.onclick = async () => {
+        if (!confirm('Delete this internship and all its applications? This cannot be undone.')) return;
+        try {
+          await DB.deleteInternship(btn.dataset.delete, user.id);
+          toast('Internship deleted.', 'success');
+          render();
+        } catch (e) { toast(e.message, 'error'); }
+      };
+    });
+
+    $$('[data-app]').forEach(sel => {
+      sel.onchange = async () => {
+        try {
+          await DB.updateApplicationStatus(sel.dataset.app, user.id, sel.value);
+          toast('Application status updated ✅', 'success');
+        } catch (e) { toast(e.message, 'error'); }
+      };
+    });
+  }
+
+  /* ======================= POST ======================= */
+  function viewPost() {
+    const user = DB.currentUser();
+    if (!user) { setTimeout(() => navigate('/login'), 0); return ''; }
+    if (user.role !== 'company') {
+      return `<div class="container"><div class="empty">
+        <div class="big">🚫</div><h3>Companies only</h3>
+        <p>Only company accounts can post internships.</p>
+        <a class="btn mt-2" href="#/">Back to internships</a></div></div>`;
+    }
+
+    return `
+      <div class="container" style="padding-top:26px">
+        <a href="#/dashboard" class="small" style="font-weight:700">← Back to dashboard</a>
+
+        <div class="card mt-2" style="max-width:760px;margin:16px auto 0">
+          <h2 class="form-title" style="text-align:left">Post a new internship</h2>
+          <p class="form-sub" style="text-align:left">Fill in the details below to attract the best candidates.</p>
+
+          <div id="postError"></div>
+
+          <form id="postForm">
+            <div class="form-group">
+              <label for="title">Role title *</label>
+              <input id="title" required placeholder="e.g. Cybersecurity Analyst Intern" />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="category">Category *</label>
+                <select id="category">
+                  ${['Engineering','Design','Data','Marketing','Finance','Content','Operations','Research','Security']
+                    .map(c => `<option>${c}</option>`).join('')}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="type">Type *</label>
+                <select id="type">
+                  <option>Internship</option>
+                  <option>Part-time</option>
+                  <option>Full-time</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="location">Location *</label>
+                <input id="location" required placeholder="e.g. Surat / Remote" list="cityList" />
+                <datalist id="cityList">
+                  ${['Surat','Bangalore','Mumbai','Delhi','Hyderabad','Pune','Chennai','Kolkata','Ahmedabad',
+                     'Jaipur','Noida','Gurgaon','Indore','Kochi','Chandigarh','Remote']
+                    .map(c => `<option value="${c}">`).join('')}
+                </datalist>
+              </div>
+              <div class="form-group">
+                <label for="duration">Duration *</label>
+                <input id="duration" required placeholder="e.g. 6 months" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="stipend">Stipend *</label>
+                <input id="stipend" required placeholder="e.g. ₹25,000 / month" />
+              </div>
+              <div class="form-group">
+                <label for="openings">Number of openings</label>
+                <input id="openings" type="number" min="1" value="1" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="deadline">Application deadline *</label>
+              <input id="deadline" type="date" required />
+            </div>
+
+            <div class="form-group">
+              <label for="skills">Skills (comma separated) *</label>
+              <input id="skills" required placeholder="React, JavaScript, Git" />
+            </div>
+
+            <div class="form-group">
+              <label for="description">Description *</label>
+              <textarea id="description" required placeholder="What will the intern work on? What will they learn?"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="requirements">Requirements *</label>
+              <textarea id="requirements" required placeholder="What skills and qualities are you looking for?"></textarea>
+            </div>
+
+            <button class="btn btn-block" type="submit">🚀 Publish Internship</button>
+          </form>
+        </div>
+      </div>
+    `;
+  }
+
+  function bindPost() {
+    const form = $('#postForm');
+    if (!form) return;
+
+    const d = new Date(Date.now() + 30 * 86400000);
+    $('#deadline').value = d.toISOString().slice(0, 10);
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const user = DB.currentUser();
+      const btn = form.querySelector('button[type=submit]');
+      btn.disabled = true; btn.textContent = 'Publishing...';
+      $('#postError').innerHTML = '';
+      try {
+        await DB.createInternship(user.id, {
+          title: $('#title').value,
+          category: $('#category').value,
+          type: $('#type').value,
+          location: $('#location').value,
+          duration: $('#duration').value,
+          stipend: $('#stipend').value,
+          openings: $('#openings').value,
+          deadline: $('#deadline').value,
+          skills: $('#skills').value,
+          description: $('#description').value,
+          requirements: $('#requirements').value
+        });
+        toast('Internship published successfully! 🚀', 'success');
+        navigate('/dashboard');
+        render();
+      } catch (err) {
+        $('#postError').innerHTML = `<div class="alert alert-error">${esc(err.message)}</div>`;
+        btn.disabled = false; btn.textContent = '🚀 Publish Internship';
+      }
+    });
+  }
+
+  /* ======================= 404 ======================= */
+  function viewNotFound(msg) {
+    return `<div class="container"><div class="empty">
+      <div class="big">🧭</div>
+      <h3>${esc(msg || 'Page not found')}</h3>
+      <p>The page you're looking for doesn't exist or has moved.</p>
+      <a class="btn mt-2" href="#/">Go to Homepage</a>
+    </div></div>`;
+  }
+
+  /* ======================= BOOT ======================= */
+  function init() {
+    window.addEventListener('hashchange', render);
+    if (!location.hash) location.hash = '#/';
+
+    const y = $('#year');
+    if (y) y.textContent = new Date().getFullYear();
+
+    render();
+  }
+
+  return { init, go, render, state };
+})();
+
+document.addEventListener('DOMContentLoaded', App.init);
+</script>
+</body>
+</html>
